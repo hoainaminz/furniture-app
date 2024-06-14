@@ -56,7 +56,7 @@ const DesignStyleList = () => {
                             onClick={() => handleDesignStyleClick(designStyle)}
                         >
                             <img
-                                src={`/uploads/${designStyle.imageUrl}`}
+                                src={`http://localhost:5001/uploads/${designStyle.imageUrl}`}
                                 alt={designStyle.name}
                                 className="w-full h-32 object-cover"
                             />

@@ -62,7 +62,7 @@ const ItemListByBrand = () => {
                 <div className="p-4 ">
                     <div className="text-xs">Bạn đang khám phá theo hãng</div>
                     <div className="text-xl font-bold mb-2">{brandName}</div>
-                    <img src={`/uploads/${brandImage}`} alt="Brand" className="w-full h-52 object-cover rounded-lg text-center"/>
+                    <img src={`http://localhost:5001/uploads/${brandImage}`} alt="Brand" className="w-full h-52 object-cover rounded-lg text-center"/>
                 </div>
             )}
             <div className="p-4">
@@ -70,7 +70,7 @@ const ItemListByBrand = () => {
                     {items.map((item) => (
                         <div key={item.id} className="masonry-item" onClick={() => handleItemClick(item.id)}>
                             <img
-                                src={`/uploads/${item.imageUrl}`}
+                                src={`http://localhost:5001/uploads/${item.imageUrl}`}
                                 alt={item.name}
                                 className="w-full object-cover rounded-lg"
                             />

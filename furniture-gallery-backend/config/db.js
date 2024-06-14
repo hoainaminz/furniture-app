@@ -6,7 +6,7 @@ const pool = mysql.createPool({
     password: process.env.DB_PASSWORD || 'uBjZl-ZCzrwPz)Xe',
     database: process.env.DB_DATABASE || 'furniture_gallery',
     waitForConnections: true,
-    connectionLimit: 10,
+    connectionLimit: 50,
     queueLimit: 0,
 });
 

@@ -56,7 +56,7 @@ const RoomTypeList = () => {
                             onClick={() => handleRoomTypeClick(roomType)}
                         >
                             <img
-                                src={`/uploads/${roomType.imageUrl}`}
+                                src={`http://localhost:5001/uploads/${roomType.imageUrl}`}
                                 alt={roomType.name}
                                 className="w-full h-32 object-cover"
                             />

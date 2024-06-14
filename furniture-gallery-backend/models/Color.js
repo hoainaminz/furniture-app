@@ -1,14 +1,14 @@
 const pool = require('../config/db');
 const db = require('../config/db'); // Import kết nối tới database
-const getItemsByColor = async (colorId) => {
-    const [rows] = await db.query(`
-        SELECT items.*
-        FROM items
-        JOIN item_colors ON items.id = item_colors.itemId
-        WHERE item_colors.colorId = ?
-    `, [colorId]);
-    return rows;
-};
+// const getItemsByColor = async (colorId) => {
+//     const [rows] = await db.query(`
+//         SELECT items.*
+//         FROM items
+//         JOIN item_colors ON items.id = item_colors.itemId
+//         WHERE item_colors.colorId = ?
+//     `, [colorId]);
+//     return rows;
+// };
 const Color = {
     getAll: async () => {
         try {
@@ -74,7 +74,23 @@ const Color = {
             throw err;
         }
     },
-    getItemsByColor,
+    // getItemsByColor,
+    getItemsByColor: async (colorId, page, limit) => { // Nhận page và limit
+        try {
+            const offset = (page - 1) * limit;
+            const [rows] = await db.query(
+                `SELECT i.* 
+       FROM items i
+       JOIN item_colors ic ON i.id = ic.itemId
+       WHERE ic.colorId = ?
+       LIMIT ? OFFSET ?`,
+                [colorId, limit, offset]
+            );
+            return rows;
+        } catch (err) {
+            throw err;
+        }
+    },
 };
 
 module.exports = Color;

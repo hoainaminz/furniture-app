@@ -55,7 +55,7 @@ const ColorList = () => {
                             onClick={() => handleColorClick(color)}
                         >
                             <img
-                                src={`/uploads/${color.imageUrl}`}
+                                src={`http://localhost:5001/uploads/${color.imageUrl}`}
                                 alt={color.name}
                                 className="w-full h-32 object-cover"
                             />

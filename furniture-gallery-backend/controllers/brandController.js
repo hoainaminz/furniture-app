@@ -1,12 +1,26 @@
 const Brand = require('../models/Brand');
+const logger = require('../config/logger');
+const multer = require('multer');
+const path = require('path');
 
-exports.getAllBrands = async (req, res) => {
+const storage = multer.diskStorage({
+    destination: function (req, file, cb) {
+        cb(null, 'public/uploads');
+    },
+    filename: function (req, file, cb) {
+        cb(null, Date.now() + path.extname(file.originalname));
+    }
+});
+
+const upload = multer({ storage: storage });
+
+exports.getAllBrand = async (req, res) => {
     try {
-        const brands = await Brand.getAll();
-        res.json(brands);
+        const brand = await Brand.getAll();
+        res.json(brand);
     } catch (err) {
-        console.error('Lỗi khi lấy danh sách nhãn hiệu:', err);
-        res.status(500).json({ message: 'Lỗi server' });
+        logger.error('Error fetching Brands:', err);
+        res.status(500).json({ message: 'Error fetching Brands' });
     }
 };
 
@@ -17,85 +31,109 @@ exports.getBrandById = async (req, res) => {
         if (brand) {
             res.json(brand);
         } else {
-            res.status(404).json({ message: 'Không tìm thấy nhãn hiệu' });
+            res.status(404).json({ message: 'Brand not found' });
         }
     } catch (err) {
-        console.error('Lỗi khi lấy thông tin nhãn hiệu:', err);
-        res.status(500).json({ message: 'Lỗi server' });
+        logger.error('Error fetching Brand:', err);
+        res.status(500).json({ message: 'Error fetching Brand' });
     }
 };
 
-exports.createBrand = async (req, res) => {
-    const { name, imageUrl } = req.body;
+exports.createBrand = [
+    upload.single('imageUrl'),
+    async (req, res) => {
+        const { name } = req.body;
+        const imageUrl = req.file ? req.file.filename : null;
 
-    if (!name || !imageUrl) {
-        return res.status(400).json({ message: 'Vui lòng cung cấp đầy đủ thông tin nhãn hiệu' });
-    }
+        logger.info('Create Brand request received:', { name, imageUrl });
 
-    try {
-        const brandId = await Brand.create(name, imageUrl);
-        res.status(201).json({ message: 'Tạo nhãn hiệu thành công', brandId });
-    } catch (err) {
-        console.error('Lỗi khi tạo nhãn hiệu:', err);
-        res.status(500).json({ message: 'Lỗi server' });
-    }
-};
-
-exports.updateBrand = async (req, res) => {
-    const { id } = req.params;
-    const { name, imageUrl } = req.body;
-
-    if (!name || !imageUrl) {
-        return res.status(400).json({ message: 'Vui lòng cung cấp đầy đủ thông tin nhãn hiệu' });
-    }
-
-    try {
-        const affectedRows = await Brand.update(id, name, imageUrl);
-        if (affectedRows > 0) {
-            res.status(200).json({ message: 'Cập nhật nhãn hiệu thành công' });
-        } else {
-            res.status(404).json({ message: 'Không tìm thấy nhãn hiệu' });
+        if (!name || !imageUrl) {
+            logger.warn('Missing fields');
+            return res.status(400).json({ message: 'Please provide all required fields' });
         }
-    } catch (err) {
-        console.error('Lỗi khi cập nhật nhãn hiệu:', err);
-        res.status(500).json({ message: 'Lỗi server' });
+
+        try {
+            const brandId = await Brand.create(name, imageUrl);
+            logger.info('Brand created with ID:', brandId);
+            res.status(201).json({ message: 'Brand created', brandId });
+        } catch (err) {
+            logger.error('Error creating Brand:', err);
+            res.status(500).json({ message: 'Error creating Brand' });
+        }
     }
-};
+];
+
+exports.updateBrand = [
+    upload.single('imageUrl'),
+    async (req, res) => {
+        const { id } = req.params;
+        const { name } = req.body;
+        const imageUrl = req.file ? req.file.filename : req.body.imageUrl;
+
+        logger.info('Update Brand request received:', { id, name, imageUrl });
+
+        if (!name || !imageUrl) {
+            logger.warn('Missing fields');
+            return res.status(400).json({ message: 'Please provide all required fields' });
+        }
+
+        try {
+            const affectedRows = await Brand.update(id, name, imageUrl);
+            if (affectedRows > 0) {
+                logger.info('Brand updated with ID:', id);
+                res.status(200).json({ message: 'Brand updated' });
+            } else {
+                res.status(404).json({ message: 'Brand not found' });
+            }
+        } catch (err) {
+            logger.error('Error updating Brand:', err);
+            res.status(500).json({ message: 'Error updating Brand' });
+        }
+    }
+];
 
 exports.deleteBrand = async (req, res) => {
     const { id } = req.params;
 
+    logger.info('Delete Brand request received:', { id });
+
     try {
         const affectedRows = await Brand.delete(id);
         if (affectedRows > 0) {
-            res.status(200).json({ message: 'Xóa nhãn hiệu thành công' });
+            logger.info('Brand deleted with ID:', id);
+            res.status(200).json({ message: 'Brand deleted' });
         } else {
-            res.status(404).json({ message: 'Không tìm thấy nhãn hiệu' });
+            res.status(404).json({ message: 'Brand not found' });
         }
     } catch (err) {
-        console.error('Lỗi khi xóa nhãn hiệu:', err);
-        res.status(500).json({ message: 'Lỗi server' });
+        logger.error('Error deleting Brand:', err);
+        res.status(500).json({ message: 'Error deleting Brand' });
     }
 };
 
 exports.addBrandToItem = async (req, res) => {
-    const { itemId, brandId } = req.body;
+    const { brandId, itemId } = req.body;
 
-    if (!itemId || !brandId) {
-        return res.status(400).json({ message: 'Vui lòng cung cấp đầy đủ thông tin' });
+    logger.info('Add Brand to item request received:', { brandId, itemId });
+
+    if (!brandId || !itemId) {
+        logger.warn('Missing BrandId or itemId');
+        return res.status(400).json({ message: 'Please provide BrandId and itemId' });
     }
 
     try {
         await Brand.addBrandToItem(itemId, brandId);
-        res.status(200).json({ message: 'Đã gán nhãn hiệu cho sản phẩm' });
+        logger.info('Brand added to item:', { brandId, itemId });
+        res.status(200).json({ message: 'Brand added to item' });
     } catch (err) {
-        console.error('Lỗi khi gán nhãn hiệu cho sản phẩm:', err);
-        res.status(500).json({ message: 'Lỗi server' });
+        logger.error('Error adding Brand to item:', err);
+        res.status(500).json({ message: 'Error adding Brand to item' });
     }
 };
+
 exports.getItemsByBrand = async (req, res) => {
     try {
-        const brandId = req.params.brandId;
+        const brandId = req.params.BrandId;
         const items = await Brand.getItemsByBrand(brandId);
         res.json(items);
     } catch (error) {

@@ -55,7 +55,7 @@ const CategoryList = () => {
                             onClick={() => handleCategoryClick(category)}
                         >
                             <img
-                                src={`/uploads/${category.imageUrl}`}
+                                src={`http://localhost:5001/uploads/${category.imageUrl}`}
                                 alt={category.name}
                                 className="w-full h-32 object-cover"
                             />

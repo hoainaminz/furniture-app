@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const authController = require('../controllers/authController');
-const upload = require('../middleware/upload');
+const upload = require('../middleware/uploadMiddleware');
 
 module.exports = (pool) => {
     // Đảm bảo sử dụng middleware để truyền pool

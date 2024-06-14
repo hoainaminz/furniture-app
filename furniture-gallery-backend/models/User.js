@@ -2,11 +2,12 @@ const pool = require('../config/db');
 
 const User = {
     create: async (user, callback) => {
-        const { username, email, password, phone, address, avatar, roleId } = user;
+        const { username, fullName, email, password, phone, address, roleId } = user;
+        const avatar = 'default_avatar.jpg';
         try {
             const [result] = await pool.execute(
-                'INSERT INTO users (username, email, password, phone, address, avatar, roleId) VALUES (?, ?, ?, ?, ?, ?, ?)',
-                [username, email, password, phone, address, avatar, roleId]
+                'INSERT INTO users (username, fullName, email, password, phone, address, avatar, roleId) VALUES (?, ?, ?, ?, ?, ?, ?, ?)',
+                [username, fullName, email, password, phone, address, avatar, roleId]
             );
             callback(null, result.insertId); // Return the newly created user ID
         } catch (err) {
@@ -26,28 +27,41 @@ const User = {
             callback(err, null);
         }
     },
-    updatePassword: async (id, password) => {
+    getById: async (id) => {
         try {
-            const [result] = await pool.query(
-                'UPDATE users SET password = ? WHERE id = ?',
-                [password, id]
-            );
-            return result.affectedRows;
+            const [results] = await pool.execute('SELECT * FROM users WHERE id = ?', [id]);
+            return results[0]; // Return the first found user (should be unique)
         } catch (err) {
+            console.error('Error fetching user by id:', err);
             throw err;
         }
     },
 
-    updateProfile: async (id, email, phone, address, avatar) => {
+    updateProfile: async (id, fullName, email, phone, address, avatar) => {
         try {
-            const [result] = await pool.query(
-                'UPDATE users SET email = ?, phone = ?, address = ?, avatar = ? WHERE id = ?',
-                [email, phone, address, avatar, id]
+            const [result] = await pool.execute(
+                'UPDATE users SET fullName = ?, email = ?, phone = ?, address = ?, avatar = ? WHERE id = ?',
+                [fullName, email, phone, address, avatar, id]
             );
-            return result.affectedRows;
+            return result.affectedRows; // Number of affected rows
         } catch (err) {
+            console.error('Error updating user profile:', err);
+            throw err;
+        }
+    },
+
+    updatePassword: async (id, password) => {
+        try {
+            const [result] = await pool.execute(
+                'UPDATE users SET password = ? WHERE id = ?',
+                [password, id]
+            );
+            return result.affectedRows; // Number of affected rows
+        } catch (err) {
+            console.error('Error updating user password:', err);
             throw err;
         }
     }
 };
+
 module.exports = User;

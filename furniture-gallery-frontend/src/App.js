@@ -21,9 +21,15 @@ import './App.css'; // Import file CSS của bạn
 //admin
 import AdminDashboard from './admin/AdminDashboard';
 import ManageUsers from './admin/ManageUsers';
-import ProtectedRoute from './components/ProtectedRoute';
 import ManageItems from './admin/ManageItems';
-
+import CreateItem from './admin/CreateItem';
+import UpdateItem from './admin/UpdateItem';
+import ManageColors from './admin/ManageColors';
+import ProtectedRoute from './components/ProtectedRoute';
+import ManageCategory from "./admin/ManageCategory";
+import ManageDesignStyle from "./admin/manageDesignStyle";
+import ManageRoomType from "./admin/ManageRoomType";
+import ManageBrand from "./admin/ManageBrand";
 function App() {
     return (
         <div className="app-container">
@@ -37,14 +43,14 @@ function App() {
 };
 
 const HeaderWrapper = () => {
-    const location = useLocation();
     const [user, setUser] = React.useState(null);
 
     React.useEffect(() => {
         const userFromStorage = localStorage.getItem('username');
         const roleIdFromStorage = localStorage.getItem('roleId');
+        const fullNameFromStorage = localStorage.getItem('fullName');
         if (userFromStorage) {
-            setUser({ username: userFromStorage, roleId: roleIdFromStorage });
+            setUser({ username: userFromStorage, roleId: roleIdFromStorage, fullName:fullNameFromStorage });
         }
     }, []);
 
@@ -81,6 +87,13 @@ const AnimatedRoutes = () => {
                 <Route path="/admin" element={<ProtectedRoute><AdminDashboard /></ProtectedRoute>} />
                 <Route path="/admin/users" element={<ProtectedRoute><ManageUsers /></ProtectedRoute>} />
                 <Route path="/admin/items" element={<ProtectedRoute><ManageItems /></ProtectedRoute>} />
+                <Route path="/admin/create-item" element={<ProtectedRoute><CreateItem /></ProtectedRoute>} />
+                <Route path="/admin/update-item/:id" element={<ProtectedRoute><UpdateItem /></ProtectedRoute>} />
+                <Route path="/admin/colors" element={<ProtectedRoute><ManageColors /></ProtectedRoute>} />
+                <Route path="/admin/categories" element={<ProtectedRoute><ManageCategory /></ProtectedRoute>} />
+                <Route path="/admin/designstyles" element={<ProtectedRoute><ManageDesignStyle /></ProtectedRoute>} />
+                <Route path="/admin/roomtypes" element={<ProtectedRoute><ManageRoomType /></ProtectedRoute>} />
+                <Route path="/admin/brands" element={<ProtectedRoute><ManageBrand /></ProtectedRoute>} />
             </Routes>
         </animated.div>
     ));

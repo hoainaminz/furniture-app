@@ -1,4 +1,3 @@
-// src/admin/AdminDashboard.js
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 
@@ -14,7 +13,7 @@ const AdminDashboard = () => {
     };
 
     return (
-        <div className="min-h-screen flex flex-col items-center justify-center bg-gray-100">
+        <div className="min-h-screen flex flex-col items-center justify-center bg-gray-100 px-6">
             <h1 className="text-3xl font-bold mb-6">Admin Dashboard</h1>
             <div className="space-y-4">
                 <button onClick={() => navigate('/admin/users')}
@@ -24,6 +23,26 @@ const AdminDashboard = () => {
                 <button onClick={() => navigate('/admin/items')}
                         className="w-full bg-blue-500 text-white p-2 rounded hover:bg-blue-600 transition duration-200">
                     Manage Items
+                </button>
+                <button onClick={() => navigate('/admin/categories')}
+                        className="w-full bg-blue-500 text-white p-2 rounded hover:bg-blue-600 transition duration-200">
+                    Manage Categories
+                </button>
+                <button onClick={() => navigate('/admin/designstyles')}
+                        className="w-full bg-blue-500 text-white p-2 rounded hover:bg-blue-600 transition duration-200">
+                    Manage Design Style
+                </button>
+                <button onClick={() => navigate('/admin/roomtypes')}
+                        className="w-full bg-blue-500 text-white p-2 rounded hover:bg-blue-600 transition duration-200">
+                    Manage Room Type
+                </button>
+                <button onClick={() => navigate('/admin/brands')}
+                        className="w-full bg-blue-500 text-white p-2 rounded hover:bg-blue-600 transition duration-200">
+                    Manage Brand
+                </button>
+                <button onClick={() => navigate('/admin/colors')}
+                        className="w-full bg-blue-500 text-white p-2 rounded hover:bg-blue-600 transition duration-200">
+                    Manage Colors
                 </button>
                 <button onClick={handleLogout}
                         className="w-full bg-red-500 text-white p-2 rounded hover:bg-red-600 transition duration-200">

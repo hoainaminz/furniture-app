@@ -1,80 +1,101 @@
 const RoomType = require('../models/RoomType');
 const logger = require('../config/logger');
+const multer = require('multer');
+const path = require('path');
+
+const storage = multer.diskStorage({
+    destination: function (req, file, cb) {
+        cb(null, 'public/uploads');
+    },
+    filename: function (req, file, cb) {
+        cb(null, Date.now() + path.extname(file.originalname));
+    }
+});
+
+const upload = multer({ storage: storage });
 
 exports.getAllRoomTypes = async (req, res) => {
     try {
-        const roomTypes = await RoomType.getAll();
-        res.json(roomTypes);
+        const RoomTypes = await RoomType.getAll();
+        res.json(RoomTypes);
     } catch (err) {
-        logger.error('Error fetching room types:', err);
-        res.status(500).json({ message: 'Error fetching room types' });
+        logger.error('Error fetching Room types:', err);
+        res.status(500).json({ message: 'Error fetching Room types' });
     }
 };
 
 exports.getRoomTypeById = async (req, res) => {
     const { id } = req.params;
     try {
-        const roomType = await RoomType.getById(id);
-        if (roomType) {
-            res.json(roomType);
+        const RoomType = await RoomType.getById(id);
+        if (RoomType) {
+            res.json(RoomType);
         } else {
             res.status(404).json({ message: 'Room type not found' });
         }
     } catch (err) {
-        logger.error('Error fetching room type:', err);
-        res.status(500).json({ message: 'Error fetching room type' });
+        logger.error('Error fetching Room type:', err);
+        res.status(500).json({ message: 'Error fetching Room type' });
     }
 };
 
-exports.createRoomType = async (req, res) => {
-    const { name, imageUrl } = req.body;
+exports.createRoomType = [
+    upload.single('imageUrl'),
+    async (req, res) => {
+        const { name } = req.body;
+        const imageUrl = req.file ? req.file.filename : null;
 
-    logger.info('Create room type request received:', { name, imageUrl });
+        logger.info('Create Room type request received:', { name, imageUrl });
 
-    if (!name || !imageUrl) {
-        logger.warn('Missing fields');
-        return res.status(400).json({ message: 'Please provide all required fields' });
-    }
-
-    try {
-        const roomTypeId = await RoomType.create(name, imageUrl);
-        logger.info('Room type created with ID:', roomTypeId);
-        res.status(201).json({ message: 'Room type created', roomTypeId });
-    } catch (err) {
-        logger.error('Error creating room type:', err);
-        res.status(500).json({ message: 'Error creating room type' });
-    }
-};
-
-exports.updateRoomType = async (req, res) => {
-    const { id } = req.params;
-    const { name, imageUrl } = req.body;
-
-    logger.info('Update room type request received:', { id, name, imageUrl });
-
-    if (!name || !imageUrl) {
-        logger.warn('Missing fields');
-        return res.status(400).json({ message: 'Please provide all required fields' });
-    }
-
-    try {
-        const affectedRows = await RoomType.update(id, name, imageUrl);
-        if (affectedRows > 0) {
-            logger.info('Room type updated with ID:', id);
-            res.status(200).json({ message: 'Room type updated' });
-        } else {
-            res.status(404).json({ message: 'Room type not found' });
+        if (!name || !imageUrl) {
+            logger.warn('Missing fields');
+            return res.status(400).json({ message: 'Please provide all required fields' });
         }
-    } catch (err) {
-        logger.error('Error updating room type:', err);
-        res.status(500).json({ message: 'Error updating room type' });
+
+        try {
+            const RoomTypeId = await RoomType.create(name, imageUrl);
+            logger.info('Room type created with ID:', RoomTypeId);
+            res.status(201).json({ message: 'Room type created', RoomTypeId });
+        } catch (err) {
+            logger.error('Error creating Room type:', err);
+            res.status(500).json({ message: 'Error creating Room type' });
+        }
     }
-};
+];
+
+exports.updateRoomType = [
+    upload.single('imageUrl'),
+    async (req, res) => {
+        const { id } = req.params;
+        const { name } = req.body;
+        const imageUrl = req.file ? req.file.filename : req.body.imageUrl;
+
+        logger.info('Update Room type request received:', { id, name, imageUrl });
+
+        if (!name || !imageUrl) {
+            logger.warn('Missing fields');
+            return res.status(400).json({ message: 'Please provide all required fields' });
+        }
+
+        try {
+            const affectedRows = await RoomType.update(id, name, imageUrl);
+            if (affectedRows > 0) {
+                logger.info('Room type updated with ID:', id);
+                res.status(200).json({ message: 'Room type updated' });
+            } else {
+                res.status(404).json({ message: 'Room type not found' });
+            }
+        } catch (err) {
+            logger.error('Error updating Room type:', err);
+            res.status(500).json({ message: 'Error updating Room type' });
+        }
+    }
+];
 
 exports.deleteRoomType = async (req, res) => {
     const { id } = req.params;
 
-    logger.info('Delete room type request received:', { id });
+    logger.info('Delete Room type request received:', { id });
 
     try {
         const affectedRows = await RoomType.delete(id);
@@ -85,35 +106,35 @@ exports.deleteRoomType = async (req, res) => {
             res.status(404).json({ message: 'Room type not found' });
         }
     } catch (err) {
-        logger.error('Error deleting room type:', err);
-        res.status(500).json({ message: 'Error deleting room type' });
+        logger.error('Error deleting Room type:', err);
+        res.status(500).json({ message: 'Error deleting Room type' });
     }
 };
 
 exports.addRoomTypeToItem = async (req, res) => {
-    const { roomTypeId, itemId } = req.body;
+    const { RoomTypeId, itemId } = req.body;
 
-    logger.info('Add room type to item request received:', { roomTypeId, itemId });
+    logger.info('Add Room type to item request received:', { RoomTypeId, itemId });
 
-    if (!roomTypeId || !itemId) {
-        logger.warn('Missing roomTypeId or itemId');
-        return res.status(400).json({ message: 'Please provide roomTypeId and itemId' });
+    if (!RoomTypeId || !itemId) {
+        logger.warn('Missing RoomTypeId or itemId');
+        return res.status(400).json({ message: 'Please provide RoomTypeId and itemId' });
     }
 
     try {
-        await RoomType.addRoomTypeToItem(itemId, roomTypeId);
-        logger.info('Room type added to item:', { roomTypeId, itemId });
+        await RoomType.addRoomTypeToItem(itemId, RoomTypeId);
+        logger.info('Room type added to item:', { RoomTypeId, itemId });
         res.status(200).json({ message: 'Room type added to item' });
     } catch (err) {
-        logger.error('Error adding room type to item:', err);
-        res.status(500).json({ message: 'Error adding room type to item' });
+        logger.error('Error adding Room type to item:', err);
+        res.status(500).json({ message: 'Error adding Room type to item' });
     }
 };
-// Lấy danh sách các Item dựa trên RoomTypeId
+
 exports.getItemsByRoomType = async (req, res) => {
     try {
-        const roomTypeId = req.params.roomTypeId;
-        const items = await RoomType.getItemsByRoomType(roomTypeId);
+        const RoomTypeId = req.params.RoomTypeId;
+        const items = await RoomType.getItemsByRoomType(RoomTypeId);
         res.json(items);
     } catch (error) {
         res.status(500).json({ message: error.message });

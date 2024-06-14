@@ -1,6 +1,7 @@
 const express = require('express');
 const cors = require('cors');
 require('dotenv').config();
+const path = require('path');
 const authRoutes = require('./routes/authRoutes');
 const itemRoutes = require('./routes/itemRoutes');
 const brandRoutes = require('./routes/brandRoutes'); // Thêm route cho Brand
@@ -10,6 +11,7 @@ const roomTypeRoutes = require('./routes/roomTypeRoutes');
 const designStyleRoutes = require('./routes/designStyleRoutes');
 const itemImageRoutes = require('./routes/itemImageRoutes');
 const userRoutes = require('./routes/userRoutes');
+const uploadRoutes = require('./routes/uploadRoutes');
 
 const app = express();
 const port = process.env.PORT || 5001;
@@ -22,6 +24,7 @@ app.use(cors({
     credentials: true
 }));
 app.use(express.urlencoded({ extended: true }));
+app.use('/uploads', express.static(path.join(__dirname, 'public/uploads')));
 
 // Fake notification
 app.get('/', (req, res) => {
@@ -41,6 +44,7 @@ app.use('/api/roomTypes', roomTypeRoutes(pool));
 app.use('/api/designStyles', designStyleRoutes(pool));
 app.use('/api/itemImages', itemImageRoutes(pool));
 app.use('/api/users', userRoutes(pool));
+app.use('/api', uploadRoutes);
 
 
 // Xử lý lỗi (giữ nguyên)

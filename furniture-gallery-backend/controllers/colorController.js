@@ -1,7 +1,20 @@
+const multer = require('multer');
+const path = require('path');
 const Color = require('../models/Color');
 const logger = require('../config/logger');
-const Brand = require("../models/Brand");
-const Item = require('../models/Item');
+
+const storage = multer.diskStorage({
+    destination: function (req, file, cb) {
+        cb(null, 'public/uploads');
+    },
+    filename: function (req, file, cb) {
+        cb(null, Date.now() + path.extname(file.originalname));
+    }
+});
+
+const upload = multer({ storage: storage });
+
+exports.uploadImage = upload.single('image');
 
 exports.getAllColors = async (req, res) => {
     try {
@@ -29,7 +42,8 @@ exports.getColorById = async (req, res) => {
 };
 
 exports.createColor = async (req, res) => {
-    const { name, imageUrl } = req.body;
+    const { name } = req.body;
+    const imageUrl = req.file ? req.file.filename : null;
 
     logger.info('Create color request received:', { name, imageUrl });
 
@@ -50,7 +64,8 @@ exports.createColor = async (req, res) => {
 
 exports.updateColor = async (req, res) => {
     const { id } = req.params;
-    const { name, imageUrl } = req.body;
+    const { name } = req.body;
+    const imageUrl = req.file ? req.file.filename : req.body.imageUrl;
 
     logger.info('Update color request received:', { id, name, imageUrl });
 
@@ -91,6 +106,7 @@ exports.deleteColor = async (req, res) => {
         res.status(500).json({ message: 'Error deleting color' });
     }
 };
+
 exports.addColorToItem = async (req, res) => {
     const { itemId, colorId } = req.body;
 
@@ -106,10 +122,14 @@ exports.addColorToItem = async (req, res) => {
         res.status(500).json({ message: 'Lỗi server' });
     }
 };
+
 exports.getItemsByColor = async (req, res) => {
     try {
         const colorId = req.params.colorId;
-        const items = await Color.getItemsByColor(colorId);
+        const page = parseInt(req.query.page) || 1;
+        const limit = 10;
+
+        const items = await Color.getItemsByColor(colorId, page, limit);
         res.json(items);
     } catch (error) {
         res.status(500).json({ message: error.message });

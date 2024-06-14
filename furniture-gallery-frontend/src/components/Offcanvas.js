@@ -8,6 +8,7 @@ const Offcanvas = ({ isOpen, onClose, user }) => {
         localStorage.removeItem('token');
         localStorage.removeItem('username');
         localStorage.removeItem('roleId');
+        localStorage.removeItem('fullName');
         navigate('/');
         onClose();
         window.location.reload(); // Làm mới trang sau khi đăng xuất
@@ -41,7 +42,7 @@ const Offcanvas = ({ isOpen, onClose, user }) => {
                                         </div>
                                         <div>
                                             <div className="text-xs text-secondary-400">Xin chào:</div>
-                                            <div className="text font-medium text-secondary-500">{user.username}</div>
+                                            <div className="text font-medium text-secondary-500">{user.fullName}</div>
                                         </div>
                                     </div>
                                 </li>

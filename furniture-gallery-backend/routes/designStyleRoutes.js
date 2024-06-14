@@ -22,6 +22,5 @@ module.exports = (pool) => {
     // Route gán DesignStyle cho Item
     router.post('/addDesignStyle', designStyleController.addDesignStyleToItem);
     router.get('/:designStyleId/items', designStyleController.getItemsByDesignStyle);
-
     return router;
 };

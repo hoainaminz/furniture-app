@@ -8,8 +8,9 @@ const Home = () => {
     useEffect(() => {
         const userFromStorage = localStorage.getItem('username');
         const roleIdFromStorage = localStorage.getItem('roleId');
+        const fullNameFromStorage = localStorage.getItem('fullName');
         if (userFromStorage) {
-            setUser({ username: userFromStorage, roleId: roleIdFromStorage });
+            setUser({ username: userFromStorage, roleId: roleIdFromStorage, fullName:fullNameFromStorage });
         }
     }, []);
 

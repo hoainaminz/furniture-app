@@ -63,7 +63,7 @@ const ItemListByDesignStyle = () => {
                 <div className="p-4 ">
                     <div className="text-xs">Bạn đang khám phá theo phong cách nội thất</div>
                     <div className="text-xl font-bold mb-2">{designStyleName}</div>
-                    <img src={`/uploads/${designStyleImage}`} alt="DesignStyle" className="w-full h-52 object-cover rounded-lg text-center"/>
+                    <img src={`http://localhost:5001/uploads/${designStyleImage}`} alt="DesignStyle" className="w-full h-52 object-cover rounded-lg text-center"/>
                 </div>
             )}
             <div className="p-4">
@@ -71,7 +71,7 @@ const ItemListByDesignStyle = () => {
                     {items.map((item) => (
                         <div key={item.id} className="masonry-item" onClick={() => handleItemClick(item.id)}>
                             <img
-                                src={`/uploads/${item.imageUrl}`}
+                                src={`http://localhost:5001/uploads/${item.imageUrl}`}
                                 alt={item.name}
                                 className="w-full object-cover rounded-lg"
                             />

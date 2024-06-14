@@ -4,8 +4,7 @@ import { useParams } from 'react-router-dom';
 import Lightbox from "yet-another-react-lightbox";
 import "yet-another-react-lightbox/styles.css";
 import Zoom from "yet-another-react-lightbox/plugins/zoom";
-// import Header from "../components/Header";
-import RelateItem from './RelateItem';  // Import the RelateItem component
+import RelateItem from './RelateItem'; // Import the RelateItem component
 
 const ItemDetail = () => {
     const { id } = useParams();
@@ -36,7 +35,7 @@ const ItemDetail = () => {
             setItem(itemResponse.data);
 
             const imagesResponse = await axios.get(`http://localhost:5001/api/items/${id}/images`, config);
-            setImages(imagesResponse.data.map(image => `/uploads/${image.imageUrl}`));
+            setImages(imagesResponse.data.map(image => `http://localhost:5001/uploads/${image.imageUrl}`));
 
             const brandResponse = await axios.get(`http://localhost:5001/api/items/${id}/brand`, config);
             setBrand(brandResponse.data.map(brand => brand.name).join(', '));
@@ -56,21 +55,21 @@ const ItemDetail = () => {
 
     useEffect(() => {
         fetchItem();
+        window.scrollTo(0, 0); // Cuộn lên đầu trang khi tải trang
     }, [id]);
 
     if (isLoading) {
-        return <div>Loading...</div>;
+        return <div> </div>;
     }
 
     return (
         <div>
-            {/*<Header user={user} />*/}
             <div className="p-4">
                 {item && (
                     <>
                         <div className="mb-4 text-center">
                             <button className="w-full" type="button" onClick={() => setOpen(true)}>
-                                <img className="w-full h-64 object-cover rounded-lg" src={images.length > 0 ? images[0] : "/uploads/default.jpg"} alt={item.name}/>
+                                <img className="w-full h-64 object-cover rounded-lg" src={images.length > 0 ? images[0] : "/uploads/default.jpg"} alt={item.name} />
                             </button>
                             <div className="text-xl font-medium mb-4">{item.name}</div>
                             <Lightbox
@@ -83,7 +82,7 @@ const ItemDetail = () => {
                                     height: 2560,
                                 }))}
                                 plugins={[Zoom]}
-                                animation={{zoom: 500}}
+                                animation={{ zoom: 500 }}
                                 zoom={{
                                     maxZoomPixelRatio: 3,
                                     zoomInMultiplier: 1.2,

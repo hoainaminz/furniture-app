@@ -1,5 +1,18 @@
 const DesignStyle = require('../models/DesignStyle');
 const logger = require('../config/logger');
+const multer = require('multer');
+const path = require('path');
+
+const storage = multer.diskStorage({
+    destination: function (req, file, cb) {
+        cb(null, 'public/uploads');
+    },
+    filename: function (req, file, cb) {
+        cb(null, Date.now() + path.extname(file.originalname));
+    }
+});
+
+const upload = multer({ storage: storage });
 
 exports.getAllDesignStyles = async (req, res) => {
     try {
@@ -26,50 +39,58 @@ exports.getDesignStyleById = async (req, res) => {
     }
 };
 
-exports.createDesignStyle = async (req, res) => {
-    const { name, imageUrl } = req.body;
+exports.createDesignStyle = [
+    upload.single('imageUrl'),
+    async (req, res) => {
+        const { name } = req.body;
+        const imageUrl = req.file ? req.file.filename : null;
 
-    logger.info('Create design style request received:', { name, imageUrl });
+        logger.info('Create design style request received:', { name, imageUrl });
 
-    if (!name || !imageUrl) {
-        logger.warn('Missing fields');
-        return res.status(400).json({ message: 'Please provide all required fields' });
-    }
-
-    try {
-        const designStyleId = await DesignStyle.create(name, imageUrl);
-        logger.info('Design style created with ID:', designStyleId);
-        res.status(201).json({ message: 'Design style created', designStyleId });
-    } catch (err) {
-        logger.error('Error creating design style:', err);
-        res.status(500).json({ message: 'Error creating design style' });
-    }
-};
-
-exports.updateDesignStyle = async (req, res) => {
-    const { id } = req.params;
-    const { name, imageUrl } = req.body;
-
-    logger.info('Update design style request received:', { id, name, imageUrl });
-
-    if (!name || !imageUrl) {
-        logger.warn('Missing fields');
-        return res.status(400).json({ message: 'Please provide all required fields' });
-    }
-
-    try {
-        const affectedRows = await DesignStyle.update(id, name, imageUrl);
-        if (affectedRows > 0) {
-            logger.info('Design style updated with ID:', id);
-            res.status(200).json({ message: 'Design style updated' });
-        } else {
-            res.status(404).json({ message: 'Design style not found' });
+        if (!name || !imageUrl) {
+            logger.warn('Missing fields');
+            return res.status(400).json({ message: 'Please provide all required fields' });
         }
-    } catch (err) {
-        logger.error('Error updating design style:', err);
-        res.status(500).json({ message: 'Error updating design style' });
+
+        try {
+            const designStyleId = await DesignStyle.create(name, imageUrl);
+            logger.info('Design style created with ID:', designStyleId);
+            res.status(201).json({ message: 'Design style created', designStyleId });
+        } catch (err) {
+            logger.error('Error creating design style:', err);
+            res.status(500).json({ message: 'Error creating design style' });
+        }
     }
-};
+];
+
+exports.updateDesignStyle = [
+    upload.single('imageUrl'),
+    async (req, res) => {
+        const { id } = req.params;
+        const { name } = req.body;
+        const imageUrl = req.file ? req.file.filename : req.body.imageUrl;
+
+        logger.info('Update design style request received:', { id, name, imageUrl });
+
+        if (!name || !imageUrl) {
+            logger.warn('Missing fields');
+            return res.status(400).json({ message: 'Please provide all required fields' });
+        }
+
+        try {
+            const affectedRows = await DesignStyle.update(id, name, imageUrl);
+            if (affectedRows > 0) {
+                logger.info('Design style updated with ID:', id);
+                res.status(200).json({ message: 'Design style updated' });
+            } else {
+                res.status(404).json({ message: 'Design style not found' });
+            }
+        } catch (err) {
+            logger.error('Error updating design style:', err);
+            res.status(500).json({ message: 'Error updating design style' });
+        }
+    }
+];
 
 exports.deleteDesignStyle = async (req, res) => {
     const { id } = req.params;
@@ -109,6 +130,7 @@ exports.addDesignStyleToItem = async (req, res) => {
         res.status(500).json({ message: 'Error adding design style to item' });
     }
 };
+
 exports.getItemsByDesignStyle = async (req, res) => {
     try {
         const designStyleId = req.params.designStyleId;

@@ -11,7 +11,7 @@ module.exports = (pool) => {
         next();
     });
 
-    router.get('/', brandController.getAllBrands);
+    router.get('/', brandController.getAllBrand);
     router.get('/:id', brandController.getBrandById);
     router.post('/', brandController.createBrand);
     router.put('/:id', brandController.updateBrand);

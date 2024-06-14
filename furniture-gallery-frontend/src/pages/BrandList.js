@@ -56,7 +56,7 @@ const BrandList = () => {
                             onClick={() => handleBrandClick(brand)}
                         >
                             <img
-                                src={`/uploads/${brand.imageUrl}`}
+                                src={`http://localhost:5001/uploads/${brand.imageUrl}`}
                                 alt={brand.name}
                                 className="w-full h-32 object-cover"
                             />

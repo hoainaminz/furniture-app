@@ -1,8 +1,7 @@
-// src/pages/ItemListByRoomType.js
+// ItemListByRoomType.js
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useParams, useLocation, useNavigate } from 'react-router-dom';
-
 
 const ItemListByRoomType = () => {
     const { roomTypeId } = useParams();
@@ -41,12 +40,13 @@ const ItemListByRoomType = () => {
                 }));
                 setItems(itemsWithImages);
             } catch (err) {
+                setError('Failed to fetch items');
                 navigate('/login');
             }
         };
 
         fetchItems();
-    }, [roomTypeId]);
+    }, [roomTypeId, navigate]);
 
     const handleItemClick = (itemId) => {
         navigate(`/items/${itemId}`);
@@ -58,12 +58,11 @@ const ItemListByRoomType = () => {
 
     return (
         <div>
-
             {roomTypeImage && (
-                <div className="p-4 ">
+                <div className="p-4">
                     <div className="text-xs">Bạn đang khám phá loại phòng</div>
                     <div className="text-xl font-bold mb-2">{roomTypeName}</div>
-                    <img src={`/uploads/${roomTypeImage}`} alt="Room Type" className="w-full h-52 object-cover rounded-lg text-center"/>
+                    <img src={`http://localhost:5001/uploads/${roomTypeImage}`} alt="Room Type" className="w-full h-52 object-cover rounded-lg text-center"/>
                 </div>
             )}
             <div className="p-4">
@@ -71,7 +70,7 @@ const ItemListByRoomType = () => {
                     {items.map((item) => (
                         <div key={item.id} className="masonry-item" onClick={() => handleItemClick(item.id)}>
                             <img
-                                src={`/uploads/${item.imageUrl}`}
+                                src={`http://localhost:5001/uploads/${item.imageUrl}`}
                                 alt={item.name}
                                 className="w-full object-cover rounded-lg"
                             />

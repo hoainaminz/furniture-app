@@ -15,6 +15,7 @@ const Login = () => {
             localStorage.setItem('token', response.data.token);
             localStorage.setItem('username', response.data.username);
             localStorage.setItem('roleId', response.data.roleId);
+            localStorage.setItem('fullName', response.data.fullName);
             navigate('/');
             window.location.reload();
         } catch (err) {
