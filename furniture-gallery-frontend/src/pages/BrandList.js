@@ -45,7 +45,7 @@ const BrandList = () => {
 
     return (
         <div>
-            <div className="p-4">
+            <div className="p-4 pb-24">
                 <div className="text-xs">Vui lòng chọn</div>
                 <div className="text-xl font-bold mb-2">CHỌN THEO HÃNG</div>
                 <div className="grid grid-cols-1 gap-4">

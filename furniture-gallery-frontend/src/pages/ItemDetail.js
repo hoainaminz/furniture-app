@@ -10,9 +10,11 @@ const ItemDetail = () => {
     const { id } = useParams();
     const [item, setItem] = useState(null);
     const [images, setImages] = useState([]);
+    const [colors, setColors] = useState([]);
     const [brand, setBrand] = useState('');
     const [roomType, setRoomType] = useState('');
     const [designStyle, setDesignStyle] = useState('');
+    // const [categories, setCategories] = useState('');
     const [isLoading, setIsLoading] = useState(true);
     const [open, setOpen] = useState(false);
     const [user, setUser] = useState(null);
@@ -40,11 +42,17 @@ const ItemDetail = () => {
             const brandResponse = await axios.get(`http://localhost:5001/api/items/${id}/brand`, config);
             setBrand(brandResponse.data.map(brand => brand.name).join(', '));
 
+            const colorsResponse = await axios.get(`http://localhost:5001/api/items/${id}/colors`, config);
+            setColors(colorsResponse.data.map(color => color.name));
+
             const roomTypeResponse = await axios.get(`http://localhost:5001/api/items/${id}/roomType`, config);
             setRoomType(roomTypeResponse.data.map(roomType => roomType.name).join(', '));
 
             const designStyleResponse = await axios.get(`http://localhost:5001/api/items/${id}/designStyle`, config);
             setDesignStyle(designStyleResponse.data.map(designStyle => designStyle.name).join(', '));
+
+            // const categoriesResponse = await axios.get(`http://localhost:5001/api/items/${id}/categories`, config);
+            // setCategories(categoriesResponse.data.map(category => category.name).join(', '));
 
             setIsLoading(false);
         } catch (error) {
@@ -64,7 +72,7 @@ const ItemDetail = () => {
 
     return (
         <div>
-            <div className="p-4">
+            <div className="p-4 pb-24">
                 {item && (
                     <>
                         <div className="mb-4 text-center">
@@ -90,23 +98,42 @@ const ItemDetail = () => {
                                 }}
                             />
                         </div>
-                        <div className="flex flex-wrap items-center">
-                            <div className="mb-4">
-                                <span className="bg-blue-100 text-blue-800 text-xs font-medium me-2 px-2.5 py-1 rounded dark:bg-blue-900 dark:text-blue-300">{brand}</span>
-                            </div>
-                            <div className="mb-4">
-                                <span className="bg-blue-100 text-blue-800 text-xs font-medium me-2 px-2.5 py-1 rounded dark:bg-blue-900 dark:text-blue-300">{roomType}</span>
-                            </div>
-                            <div className="mb-4">
-                                <span className="bg-blue-100 text-blue-800 text-xs font-medium me-2 px-2.5 py-1 rounded dark:bg-blue-900 dark:text-blue-300">{designStyle}</span>
-                            </div>
+                        <div className="tags flex flex-wrap items-center">
+                            {brand && (
+                                <div className="mb-4">
+                                    <span className="bg-blue-100 text-blue-800 text-xs font-medium me-2 px-2.5 py-1 rounded dark:bg-blue-900 dark:text-blue-300">{brand}</span>
+                                </div>
+                            )}
+                            {roomType && (
+                                <div className="mb-4">
+                                    <span className="bg-blue-100 text-blue-800 text-xs font-medium me-2 px-2.5 py-1 rounded dark:bg-blue-900 dark:text-blue-300">{roomType}</span>
+                                </div>
+                            )}
+                            {designStyle && (
+                                <div className="mb-4">
+                                    <span className="bg-blue-100 text-blue-800 text-xs font-medium me-2 px-2.5 py-1 rounded dark:bg-blue-900 dark:text-blue-300">{designStyle}</span>
+                                </div>
+                            )}
+                            {/*{categories && (*/}
+                            {/*    <div className="mb-4">*/}
+                            {/*        <span className="bg-blue-100 text-blue-800 text-xs font-medium me-2 px-2.5 py-1 rounded dark:bg-blue-900 dark:text-blue-300">{categories}</span>*/}
+                            {/*    </div>*/}
+                            {/*)}*/}
+                            {colors && colors.map((color, index) => (
+                                <div className="mb-4" key={index}>
+                                    <span className="bg-blue-100 text-blue-800 text-xs font-medium me-2 px-2.5 py-1 rounded dark:bg-blue-900 dark:text-blue-300">{color}</span>
+                                </div>
+                            ))}
                         </div>
                     </>
                 )}
-                <RelateItem itemId={id} /> {/* Integrate the RelateItem component */}
+                <RelateItem itemId={id}/> {/* Integrate the RelateItem component */}
             </div>
         </div>
     );
 };
 
 export default ItemDetail;
+
+
+

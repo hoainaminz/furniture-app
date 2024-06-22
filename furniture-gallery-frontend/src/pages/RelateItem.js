@@ -46,7 +46,7 @@ const RelateItem = ({ itemId }) => {
     };
 
     return (
-        <div className="pb-20 text-center">
+        <div className="text-center">
             <h2 className="text-2xl font-bold mb-4">Sản phẩm liên quan</h2>
             <div className="masonry">
                 {relatedItems.map((item, index) => (

@@ -59,7 +59,7 @@ const ItemListByRoomType = () => {
     return (
         <div>
             {roomTypeImage && (
-                <div className="p-4">
+                <div className="p-4 pb-24">
                     <div className="text-xs">Bạn đang khám phá loại phòng</div>
                     <div className="text-xl font-bold mb-2">{roomTypeName}</div>
                     <img src={`http://localhost:5001/uploads/${roomTypeImage}`} alt="Room Type" className="w-full h-52 object-cover rounded-lg text-center"/>

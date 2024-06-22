@@ -2,134 +2,150 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { PencilSquareIcon, TrashIcon } from '@heroicons/react/24/outline';
 
-const ManageDesignStyle = () => {
-    const [designStyles, setDesignStyles] = useState([]);
+const ManageColors = () => {
+    const [colors, setColors] = useState([]);
+    const [search, setSearch] = useState('');
     const [name, setName] = useState('');
-    const [imageUrl, setImageUrl] = useState(null);
-    const [searchTerm, setSearchTerm] = useState('');
-    const [editId, setEditId] = useState(null);
+    const [image, setImage] = useState(null);
+    const [editingColorId, setEditingColorId] = useState(null);
 
     useEffect(() => {
-        fetchDesignStyles();
+        const fetchColors = async () => {
+            try {
+                const token = localStorage.getItem('token');
+                const response = await axios.get('http://localhost:5001/api/colors', {
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
+                });
+                setColors(response.data);
+            } catch (error) {
+                console.error('Lỗi khi lấy danh sách màu:', error);
+            }
+        };
+        fetchColors();
     }, []);
 
-    const fetchDesignStyles = async () => {
-        try {
-            const response = await axios.get('http://localhost:5001/api/designstyles', {
-                headers: {
-                    Authorization: `Bearer ${localStorage.getItem('token')}`
-                }
-            });
-            setDesignStyles(response.data);
-        } catch (error) {
-            console.error('Error fetching design styles:', error);
-        }
-    };
-
-    const handleAddDesignStyle = async () => {
-        if (!name || !imageUrl) {
-            alert('Please provide all required fields.');
-            return;
-        }
-
+    const handleAddColor = async () => {
+        if (!name || !image) return;
         const formData = new FormData();
         formData.append('name', name);
-        formData.append('imageUrl', imageUrl);
+        formData.append('image', image);
 
         try {
-            if (editId) {
-                await axios.put(`http://localhost:5001/api/designstyles/${editId}`, formData, {
-                    headers: {
-                        Authorization: `Bearer ${localStorage.getItem('token')}`,
-                        'Content-Type': 'multipart/form-data'
-                    }
-                });
-            } else {
-                await axios.post('http://localhost:5001/api/designstyles', formData, {
-                    headers: {
-                        Authorization: `Bearer ${localStorage.getItem('token')}`,
-                        'Content-Type': 'multipart/form-data'
-                    }
-                });
-            }
-            fetchDesignStyles();
-            setName('');
-            setImageUrl(null);
-            setEditId(null);
+            const token = localStorage.getItem('token');
+            await axios.post('http://localhost:5001/api/colors', formData, {
+                headers: {
+                    'Authorization': `Bearer ${token}`,
+                    'Content-Type': 'multipart/form-data'
+                }
+            });
+            // Reload lại trang sau khi thêm thành công
+            window.location.reload();
         } catch (error) {
-            console.error('Error adding/updating design style:', error);
+            console.error('Lỗi khi thêm màu mới:', error);
         }
     };
 
-    const handleEdit = (designStyle) => {
-        setName(designStyle.name);
-        setImageUrl(designStyle.imageUrl);
-        setEditId(designStyle.id);
+    const handleUpdateColor = async () => {
+        if (!editingColorId || !name) return;
+        const formData = new FormData();
+        formData.append('name', name);
+        if (image) formData.append('image', image);
+
+        try {
+            const token = localStorage.getItem('token');
+            await axios.put(`http://localhost:5001/api/colors/${editingColorId}`, formData, {
+                headers: {
+                    'Authorization': `Bearer ${token}`,
+                    'Content-Type': 'multipart/form-data'
+                }
+            });
+            // Reload lại trang sau khi cập nhật thành công
+            window.location.reload();
+        } catch (error) {
+            console.error('Lỗi khi cập nhật màu:', error);
+        }
     };
 
-    const handleDelete = async (id) => {
-        const confirmDelete = window.confirm("Bạn có chắc chắn muốn xóa phong cách thiết kế này?");
-        if (confirmDelete) {
+    const handleDeleteColor = async (id) => {
+        if (window.confirm('Bạn có chắc chắn muốn xoá màu này không?')) {
             try {
-                await axios.delete(`http://localhost:5001/api/designstyles/${id}`, {
+                const token = localStorage.getItem('token');
+                await axios.delete(`http://localhost:5001/api/colors/${id}`, {
                     headers: {
-                        Authorization: `Bearer ${localStorage.getItem('token')}`
+                        'Authorization': `Bearer ${token}`
                     }
                 });
-                fetchDesignStyles();
+                setColors(colors.filter(color => color.id !== id));
             } catch (error) {
-                console.error('Error deleting design style:', error);
+                console.error('Lỗi khi xoá màu:', error);
             }
         }
     };
 
-    const handleCancel = () => {
-        setName('');
-        setImageUrl(null);
-        setEditId(null);
+    const handleEditColor = (color) => {
+        setName(color.name);
+        setEditingColorId(color.id);
     };
 
-    const filteredDesignStyles = designStyles.filter((style) =>
-        style.name.toLowerCase().includes(searchTerm.toLowerCase())
+    const handleCancelUpdate = () => {
+        setName('');
+        setImage(null);
+        setEditingColorId(null);
+    };
+
+    const filteredColors = colors.filter(color =>
+        color && color.name && color.name.toLowerCase().includes(search.toLowerCase())
     );
 
     return (
-        <div className="container mx-auto p-4 h-auto pb-24">
-            <h1 className="text-2xl font-bold mb-4">Quản lý phong cách thiết kế</h1>
-            <div className="mb-4">
+        <div className="container mx-auto p-4 h-auto">
+            <h1 className="text-2xl font-bold mb-4">Quản lý mã màu</h1>
+
+            <div className="mb-4 flex flex-col">
                 <input
                     type="text"
-                    placeholder="Tên phong cách"
+                    placeholder="Tên màu"
                     value={name}
                     onChange={(e) => setName(e.target.value)}
-                    className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline mb-2"
+                    className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline mr-2 "
                 />
                 <input
                     type="file"
-                    onChange={(e) => setImageUrl(e.target.files[0])}
-                    className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline mb-2"
+                    onChange={(e) => setImage(e.target.files[0])}
+                    className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline my-2"
                 />
-                <button
-                    onClick={handleAddDesignStyle}
-                    className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
-                >
-                    {editId ? 'Cập nhật phong cách' : 'Thêm phong cách'}
-                </button>
-                {editId && (
+                {editingColorId ? (
+                    <>
+                        <button
+                            onClick={handleUpdateColor}
+                            className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+                        >
+                            Cập nhật màu
+                        </button>
+                        <button
+                            onClick={handleCancelUpdate}
+                            className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline my-2"
+                        >
+                            Hủy
+                        </button>
+                    </>
+                ) : (
                     <button
-                        onClick={handleCancel}
-                        className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline ml-2"
+                        onClick={handleAddColor}
+                        className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
                     >
-                        Hủy
+                        Thêm màu
                     </button>
                 )}
             </div>
             <div className="mb-4">
                 <input
                     type="text"
-                    placeholder="Tìm kiếm phong cách"
-                    value={searchTerm}
-                    onChange={(e) => setSearchTerm(e.target.value)}
+                    placeholder="Tìm kiếm màu sắc"
+                    value={search}
+                    onChange={(e) => setSearch(e.target.value)}
                     className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                 />
             </div>
@@ -137,33 +153,33 @@ const ManageDesignStyle = () => {
                 <thead>
                 <tr>
                     <th className="py-2 px-4 border-b-2 border-gray-300">ID</th>
-                    <th className="py-2 px-4 border-b-2 border-gray-300">Tên phong cách</th>
+                    <th className="py-2 px-4 border-b-2 border-gray-300">Tên màu</th>
                     <th className="py-2 px-4 border-b-2 border-gray-300">Hình ảnh</th>
                     <th className="py-2 px-4 border-b-2 border-gray-300">Hành động</th>
                 </tr>
                 </thead>
                 <tbody>
-                {filteredDesignStyles.map((style) => (
-                    <tr key={style.id}>
-                        <td className="py-2 px-4 border-b">{style.id}</td>
-                        <td className="py-2 px-4 border-b">{style.name}</td>
+                {filteredColors.map(color => (
+                    <tr key={color.id}>
+                        <td className="py-2 px-4 border-b">{color.id}</td>
+                        <td className="py-2 px-4 border-b">{color.name}</td>
                         <td className="py-2 px-4 border-b">
-                            {style.imageUrl && (
-                                <img src={`http://localhost:5001/uploads/${style.imageUrl}`} alt={style.name} className="h-16" />
-                            )}
+                            {color.imageUrl &&
+                                <img src={`http://localhost:5001/uploads/${color.imageUrl}`} alt={color.name}
+                                     className="h-12 w-12 object-cover"/>}
                         </td>
                         <td className="py-2 px-4 border-b">
                             <button
-                                onClick={() => handleEdit(style)}
-                                className="text-blue-500 hover:text-blue-700 mr-2"
+                                onClick={() => handleEditColor(color)}
+                                className="text-blue-500 hover:text-blue-700"
                             >
-                                <PencilSquareIcon className="h-5 w-5 inline-block" />
+                                <PencilSquareIcon className="h-5 w-5 inline-block"/>
                             </button>
                             <button
-                                onClick={() => handleDelete(style.id)}
-                                className="text-red-500 hover:text-red-700"
+                                onClick={() => handleDeleteColor(color.id)}
+                                className="ml-2 text-red-500 hover:text-red-700"
                             >
-                                <TrashIcon className="h-5 w-5 inline-block" />
+                                <TrashIcon className="h-5 w-5 inline-block"/>
                             </button>
                         </td>
                     </tr>
@@ -174,4 +190,4 @@ const ManageDesignStyle = () => {
     );
 };
 
-export default ManageDesignStyle;
+export default ManageColors;

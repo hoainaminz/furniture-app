@@ -16,7 +16,7 @@ const CreateItem = () => {
     const [brands, setBrands] = useState([]);
     const [roomTypes, setRoomTypes] = useState([]);
     const [designStyles, setDesignStyles] = useState([]);
-    const [color, setColor] = useState(null);
+    const [selectedColors, setSelectedColors] = useState([]);
     const [brand, setBrand] = useState(null);
     const [roomType, setRoomType] = useState(null);
     const [designStyle, setDesignStyle] = useState(null);
@@ -58,10 +58,12 @@ const CreateItem = () => {
         formData.append('name', name);
         formData.append('category', category ? category.value : '');
         formData.append('description', description);
-        formData.append('color', color ? color.value : '');
         formData.append('brand', brand ? brand.value : '');
         formData.append('roomType', roomType ? roomType.value : '');
         formData.append('designStyle', designStyle ? designStyle.value : '');
+        selectedColors.forEach((color) => {
+            formData.append('colors[]', color.value);
+        });
         images.forEach((image) => {
             formData.append('images', image);
         });
@@ -124,8 +126,9 @@ const CreateItem = () => {
                     <label className="block text-gray-700 text-sm font-bold mb-2">Màu sắc:</label>
                     <Select
                         options={colors}
-                        value={color}
-                        onChange={setColor}
+                        value={selectedColors}
+                        onChange={setSelectedColors}
+                        isMulti
                         className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                         placeholder="Chọn màu sắc"
                         isClearable

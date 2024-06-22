@@ -45,7 +45,7 @@ const RoomTypeList = () => {
 
     return (
         <div>
-            <div className="p-4">
+            <div className="p-4 pb-24">
                 <div className="text-xs">Vui lòng chọn</div>
                 <div className="text-xl font-bold mb-2">CHỌN THEO LOẠI PHÒNG</div>
                 <div className="grid grid-cols-2 gap-4">

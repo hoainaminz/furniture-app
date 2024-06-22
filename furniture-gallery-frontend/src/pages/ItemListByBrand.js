@@ -59,7 +59,7 @@ const ItemListByBrand = () => {
     return (
         <div>
             {brandImage && (
-                <div className="p-4 ">
+                <div className="p-4 pb-24 ">
                     <div className="text-xs">Bạn đang khám phá theo hãng</div>
                     <div className="text-xl font-bold mb-2">{brandName}</div>
                     <img src={`http://localhost:5001/uploads/${brandImage}`} alt="Brand" className="w-full h-52 object-cover rounded-lg text-center"/>

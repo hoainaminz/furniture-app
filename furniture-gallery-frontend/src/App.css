@@ -44,12 +44,19 @@ html, body, #root, .app-container {
   -ms-touch-action: pan-y;
   -webkit-overflow-scrolling: touch;
 }
-
+.app-container {
+  position: relative;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
 .page {
   position: absolute;
   width: 100%;
   height: 100%;
   will-change: transform;
+  flex: 1;
+  padding-top: 4rem;
 }
 
 .page-enter {
@@ -78,4 +85,7 @@ footer {
   z-index: 10; /* Đảm bảo footer luôn nằm trên các phần tử khác */
   padding: 1rem;
   text-align: center;
+}
+.carousel-status {
+  display: none;
 }

@@ -60,8 +60,8 @@ const Register = () => {
     };
 
     return (
-        <div className="min-h-screen flex items-center justify-center bg-gray-100">
-            <div className="bg-white p-6 rounded-lg shadow-lg w-full max-w-md">
+        <div className="min-h-screen flex items-start justify-center pt-2">
+            <div className="bg-white p-6 rounded-lg w-full max-w-md">
                 <h2 className="text-2xl font-bold mb-6">Đăng ký</h2>
                 <form onSubmit={handleSubmit}>
                     <div className="mb-4">

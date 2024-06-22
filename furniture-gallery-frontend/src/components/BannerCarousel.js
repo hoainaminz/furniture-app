@@ -3,9 +3,9 @@ import { Carousel } from 'react-responsive-carousel';
 import 'react-responsive-carousel/lib/styles/carousel.min.css';
 
 // Import trực tiếp hình ảnh
-import banner1 from '../assets/banner.jpg';
-import banner2 from '../assets/banner.jpg';
-import banner3 from '../assets/banner.jpg';
+import banner1 from '../assets/banner1.jpg';
+import banner2 from '../assets/banner2.jpg';
+import banner3 from '../assets/banner3.jpg';
 
 const banners = [
     { id: 1, src: banner1, alt: 'Banner 1' },

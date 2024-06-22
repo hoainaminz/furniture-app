@@ -60,7 +60,7 @@ const ItemListByDesignStyle = () => {
         <div>
 
             {designStyleImage && (
-                <div className="p-4 ">
+                <div className="p-4 pb-24">
                     <div className="text-xs">Bạn đang khám phá theo phong cách nội thất</div>
                     <div className="text-xl font-bold mb-2">{designStyleName}</div>
                     <img src={`http://localhost:5001/uploads/${designStyleImage}`} alt="DesignStyle" className="w-full h-52 object-cover rounded-lg text-center"/>

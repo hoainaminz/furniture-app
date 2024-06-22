@@ -59,7 +59,7 @@ const ItemListByCategory = () => {
         <div>
 
             {categoryName && (
-                <div className="p-4 ">
+                <div className="p-4 pb-24">
                     <div className="text-xs">Bạn đang khám phá loại sản phẩm</div>
                     <div className="text-xl font-bold mb-2">{categoryName}</div>
                     <img src={`http://localhost:5001/uploads/${categoryImage}`} alt="Category"

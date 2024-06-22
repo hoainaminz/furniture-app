@@ -9,8 +9,9 @@ const Home = () => {
         const userFromStorage = localStorage.getItem('username');
         const roleIdFromStorage = localStorage.getItem('roleId');
         const fullNameFromStorage = localStorage.getItem('fullName');
+        const avatarFromStorage = localStorage.getItem('avatar');
         if (userFromStorage) {
-            setUser({ username: userFromStorage, roleId: roleIdFromStorage, fullName:fullNameFromStorage });
+            setUser({ username: userFromStorage, roleId: roleIdFromStorage, fullName:fullNameFromStorage, avatar:avatarFromStorage });
         }
     }, []);
 

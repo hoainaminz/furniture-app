@@ -16,6 +16,7 @@ const Login = () => {
             localStorage.setItem('username', response.data.username);
             localStorage.setItem('roleId', response.data.roleId);
             localStorage.setItem('fullName', response.data.fullName);
+            localStorage.setItem('avatar',response.data.avatar);
             navigate('/');
             window.location.reload();
         } catch (err) {
@@ -24,7 +25,7 @@ const Login = () => {
     };
 
     return (
-        <div className="min-h-screen flex items-center justify-center bg-gray-100">
+        <div className="min-h-screen flex items-start justify-center pt-6">
             <div className="bg-white p-8 rounded w-full max-w-md">
                 <h2 className="text-2xl font-bold mb-6 text-center">Đăng nhập vào Nhựa Đại Việt</h2>
                 <form onSubmit={handleSubmit}>
