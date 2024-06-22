@@ -107,22 +107,38 @@ exports.deleteColor = async (req, res) => {
     }
 };
 
+// exports.addColorToItem = async (req, res) => {
+//     const { itemId, colorId } = req.body;
+//
+//     if (!itemId || !colorId) {
+//         return res.status(400).json({ message: 'Vui lòng cung cấp đầy đủ thông tin' });
+//     }
+//
+//     try {
+//         await Color.addColorToItem(itemId, colorId);
+//         res.status(200).json({ message: 'Đã gán mã màu cho sản phẩm' });
+//     } catch (err) {
+//         console.error('Lỗi khi gán mã màu cho sản phẩm:', err);
+//         res.status(500).json({ message: 'Lỗi server' });
+//     }
+// };
 exports.addColorToItem = async (req, res) => {
-    const { itemId, colorId } = req.body;
+    const { itemId, colorIds } = req.body;
 
-    if (!itemId || !colorId) {
+    if (!itemId || !Array.isArray(colorIds) || colorIds.length === 0) {
         return res.status(400).json({ message: 'Vui lòng cung cấp đầy đủ thông tin' });
     }
 
     try {
-        await Color.addColorToItem(itemId, colorId);
+        for (const colorId of colorIds) {
+            await Color.addColorToItem(itemId, colorId);
+        }
         res.status(200).json({ message: 'Đã gán mã màu cho sản phẩm' });
     } catch (err) {
         console.error('Lỗi khi gán mã màu cho sản phẩm:', err);
         res.status(500).json({ message: 'Lỗi server' });
     }
 };
-
 exports.getItemsByColor = async (req, res) => {
     try {
         const colorId = req.params.colorId;

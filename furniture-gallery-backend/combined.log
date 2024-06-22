@@ -499,3 +499,67 @@
 {"level":"info","message":"Login successful, token generated","service":"user-service","timestamp":"2024-06-14 14:15:17"}
 {"address":"vn","avatar":"default_avatar.jpg","email":"emailv32dcl@gmail.com","fullName":"iss22ac jor2ue","level":"info","message":"Register request received:","password":"password","phone":965979797,"roleId":2,"service":"user-service","timestamp":"2024-06-14 15:33:33","username":"josu322re"}
 {"0":"j","1":"o","2":"s","3":"u","4":"3","5":"2","6":"2","7":"r","8":"e","level":"info","message":"User created:","service":"user-service","timestamp":"2024-06-14 15:33:33"}
+{"address":"vn","avatar":"default_avatar.jpg","email":"emailv321dcl@gmail.com","fullName":"iss212ac jor2ue","level":"info","message":"Register request received:","password":"password","phone":965979797,"roleId":2,"service":"user-service","timestamp":"2024-06-14 16:27:56","username":"jos1u322re"}
+{"0":"j","1":"o","2":"s","3":"1","4":"u","5":"3","6":"2","7":"2","8":"r","9":"e","level":"info","message":"User created:","service":"user-service","timestamp":"2024-06-14 16:27:56"}
+{"address":"vn","avatar":"","email":"emailv321dcl@gmail.com","fullName":"iss212ac jor2ue","level":"info","message":"Register request received:","password":"password","phone":965979797,"roleId":2,"service":"user-service","timestamp":"2024-06-14 16:28:48","username":"jos1u322re"}
+{"level":"warn","message":"Username already exists","service":"user-service","timestamp":"2024-06-14 16:28:48"}
+{"address":"vn","avatar":"","email":"emailv32ư1dcl@gmail.com","fullName":"isưs212ac jor2ue","level":"info","message":"Register request received:","password":"password","phone":965979797,"roleId":2,"service":"user-service","timestamp":"2024-06-14 16:28:52","username":"jos1uư322re"}
+{"0":"j","1":"o","10":"e","2":"s","3":"1","4":"u","5":"ư","6":"3","7":"2","8":"2","9":"r","level":"info","message":"User created:","service":"user-service","timestamp":"2024-06-14 16:28:53"}
+{"address":"asd ","avatar":"default_avatar.jpg","email":"asdasd@rr.co","fullName":"adasd ","level":"info","message":"Register request received:","password":"asdasd","phone":"123","roleId":2,"service":"user-service","timestamp":"2024-06-14 16:30:02","username":"asdasd"}
+{"0":"a","1":"s","2":"d","3":"a","4":"s","5":"d","level":"info","message":"User created:","service":"user-service","timestamp":"2024-06-14 16:30:02"}
+{"level":"info","message":"Login request received:","password":"password","service":"user-service","timestamp":"2024-06-14 16:30:09","username":"hoainam"}
+{"level":"info","message":"Login successful, token generated","service":"user-service","timestamp":"2024-06-14 16:30:09"}
+{"id":"11","level":"info","message":"Delete design style request received:","service":"user-service","timestamp":"2024-06-14 16:30:17"}
+{"0":"1","1":"1","level":"info","message":"Design style deleted with ID:","service":"user-service","timestamp":"2024-06-14 16:30:17"}
+{"id":"4","level":"info","message":"Delete Brand request received:","service":"user-service","timestamp":"2024-06-14 16:30:23"}
+{"0":"4","level":"info","message":"Brand deleted with ID:","service":"user-service","timestamp":"2024-06-14 16:30:23"}
+{"level":"info","message":"Login request received:","password":"password","service":"user-service","timestamp":"2024-06-14 16:50:58","username":"hoainam"}
+{"level":"info","message":"Login successful, token generated","service":"user-service","timestamp":"2024-06-14 16:50:58"}
+{"address":"hamy","avatar":"default_avatar.jpg","email":"ham22e3y@uk.co","fullName":"asdasd ","level":"info","message":"Register request received:","password":"11231 ","phone":"123","roleId":2,"service":"user-service","timestamp":"2024-06-14 16:53:44","username":"11231 "}
+{"0":"1","1":"1","2":"2","3":"3","4":"1","5":" ","level":"info","message":"User created:","service":"user-service","timestamp":"2024-06-14 16:53:44"}
+{"level":"info","message":"Login request received:","password":"1123","service":"user-service","timestamp":"2024-06-14 16:53:53","username":"1123"}
+{"level":"warn","message":"Invalid credentials - user not found","service":"user-service","timestamp":"2024-06-14 16:53:53"}
+{"level":"info","message":"Login request received:","password":"11231 ","service":"user-service","timestamp":"2024-06-14 16:53:56","username":"11231 "}
+{"level":"info","message":"Login successful, token generated","service":"user-service","timestamp":"2024-06-14 16:53:56"}
+{"address":"112312","avatar":"default_avatar.jpg","email":"112312@fda.da","fullName":"Vũ Văn Quân","level":"info","message":"Register request received:","password":"112312","phone":"123","roleId":2,"service":"user-service","timestamp":"2024-06-14 16:54:17","username":"112312"}
+{"0":"1","1":"1","2":"2","3":"3","4":"1","5":"2","level":"info","message":"User created:","service":"user-service","timestamp":"2024-06-14 16:54:17"}
+{"level":"info","message":"Login request received:","password":"password","service":"user-service","timestamp":"2024-06-14 17:09:42","username":"hoainam"}
+{"level":"info","message":"Login successful, token generated","service":"user-service","timestamp":"2024-06-14 17:09:42"}
+{"level":"info","message":"Login request received:","password":"password","service":"user-service","timestamp":"2024-06-14 17:17:30","username":"jos1uư322re"}
+{"level":"info","message":"Login successful, token generated","service":"user-service","timestamp":"2024-06-14 17:17:30"}
+{"level":"info","message":"Login request received:","password":"password","service":"user-service","timestamp":"2024-06-14 17:23:09","username":"jos1uư322re"}
+{"level":"info","message":"Login successful, token generated","service":"user-service","timestamp":"2024-06-14 17:23:09"}
+{"level":"info","message":"Login request received:","password":"password","service":"user-service","timestamp":"2024-06-14 17:38:54","username":"hoainam"}
+{"level":"info","message":"Login successful, token generated","service":"user-service","timestamp":"2024-06-14 17:38:54"}
+{"level":"info","message":"Login request received:","password":"password","service":"user-service","timestamp":"2024-06-14 17:58:41","username":"chiennguyen123"}
+{"level":"info","message":"Login successful, token generated","service":"user-service","timestamp":"2024-06-14 17:58:41"}
+{"level":"info","message":"Login request received:","password":"password","service":"user-service","timestamp":"2024-06-15 11:18:01","username":"chiennguyen123"}
+{"level":"info","message":"Login successful, token generated","service":"user-service","timestamp":"2024-06-15 11:18:01"}
+{"level":"info","message":"Login request received:","password":"password","service":"user-service","timestamp":"2024-06-15 11:21:33","username":"chiennguyen123"}
+{"level":"info","message":"Login successful, token generated","service":"user-service","timestamp":"2024-06-15 11:21:33"}
+{"level":"info","message":"Login request received:","password":"password","service":"user-service","timestamp":"2024-06-15 11:27:10","username":"chiennguyen123"}
+{"level":"info","message":"Login successful, token generated","service":"user-service","timestamp":"2024-06-15 11:27:10"}
+{"level":"info","message":"Login request received:","password":"password","service":"user-service","timestamp":"2024-06-15 11:31:02","username":"chiennguyen123"}
+{"level":"info","message":"Login successful, token generated","service":"user-service","timestamp":"2024-06-15 11:31:02"}
+{"level":"info","message":"Login request received:","password":"password","service":"user-service","timestamp":"2024-06-15 11:34:12","username":"chiennguyen123"}
+{"level":"info","message":"Login successful, token generated","service":"user-service","timestamp":"2024-06-15 11:34:12"}
+{"level":"info","message":"Login request received:","password":"password","service":"user-service","timestamp":"2024-06-15 16:58:09","username":"hoainam"}
+{"level":"info","message":"Login successful, token generated","service":"user-service","timestamp":"2024-06-15 16:58:09"}
+{"level":"info","message":"Login request received:","password":"password","service":"user-service","timestamp":"2024-06-15 16:59:47","username":"hoainam"}
+{"level":"info","message":"Login successful, token generated","service":"user-service","timestamp":"2024-06-15 16:59:47"}
+{"imageUrl":"1718962532148-dl.beatsnoop.com-final-Sa248ZwMkG.jpg","level":"info","message":"Create color request received:","name":"1","service":"user-service","timestamp":"2024-06-21 16:35:32"}
+{"level":"info","message":"Color created with ID:","service":"user-service","timestamp":"2024-06-21 16:35:32"}
+{"imageUrl":"1718962535188-dl.beatsnoop.com-final-Sa248ZwMkG.jpg","level":"info","message":"Create color request received:","name":"2","service":"user-service","timestamp":"2024-06-21 16:35:35"}
+{"level":"info","message":"Color created with ID:","service":"user-service","timestamp":"2024-06-21 16:35:35"}
+{"imageUrl":"1718962537659-dl.beatsnoop.com-final-Sa248ZwMkG.jpg","level":"info","message":"Create color request received:","name":"3","service":"user-service","timestamp":"2024-06-21 16:35:37"}
+{"level":"info","message":"Color created with ID:","service":"user-service","timestamp":"2024-06-21 16:35:37"}
+{"level":"info","message":"Login request received:","password":"password","service":"user-service","timestamp":"2024-06-21 16:53:39","username":"hoainam"}
+{"level":"info","message":"Login successful, token generated","service":"user-service","timestamp":"2024-06-21 16:53:39"}
+{"level":"info","message":"Login request received:","password":"password","service":"user-service","timestamp":"2024-06-21 16:53:48","username":"chiennguyen123"}
+{"level":"info","message":"Login successful, token generated","service":"user-service","timestamp":"2024-06-21 16:53:48"}
+{"level":"info","message":"Login request received:","password":"password","service":"user-service","timestamp":"2024-06-21 17:00:17","username":"hoainam"}
+{"level":"info","message":"Login successful, token generated","service":"user-service","timestamp":"2024-06-21 17:00:17"}
+{"level":"info","message":"Login request received:","password":"pasword","service":"user-service","timestamp":"2024-06-22 09:18:02","username":"hoainam"}
+{"level":"warn","message":"Invalid credentials - password mismatch","service":"user-service","timestamp":"2024-06-22 09:18:02"}
+{"level":"info","message":"Login request received:","password":"password","service":"user-service","timestamp":"2024-06-22 09:18:06","username":"hoainam"}
+{"level":"info","message":"Login successful, token generated","service":"user-service","timestamp":"2024-06-22 09:18:06"}

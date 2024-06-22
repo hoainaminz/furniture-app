@@ -27,8 +27,59 @@ exports.getItemById = async (req, res) => {
     }
 };
 
+// exports.createItem = async (req, res) => {
+//     const { name, category, description, color, brand, roomType, designStyle } = req.body;
+//     const images = req.files;
+//
+//     if (!name || !category || !description || !images) {
+//         return res.status(400).json({ error: 'All fields are required' });
+//     }
+//
+//     try {
+//         const [itemResult] = await pool.query(
+//             'INSERT INTO items (name, categoryId, description) VALUES (?, ?, ?)',
+//             [name, category, description]
+//         );
+//
+//         const itemId = itemResult.insertId;
+//
+//         const imagePromises = images.map(image => {
+//             return pool.query(
+//                 'INSERT INTO item_images (itemId, imageUrl) VALUES (?, ?)',
+//                 [itemId, image.filename]
+//             );
+//         });
+//
+//         const colorPromise = pool.query(
+//             'INSERT INTO item_colors (itemId, colorId) VALUES (?, ?)',
+//             [itemId, color]
+//         );
+//
+//         const brandPromise = pool.query(
+//             'INSERT INTO item_brands (itemId, brandId) VALUES (?, ?)',
+//             [itemId, brand]
+//         );
+//
+//         const roomTypePromise = pool.query(
+//             'INSERT INTO item_room_types (itemId, roomTypeId) VALUES (?, ?)',
+//             [itemId, roomType]
+//         );
+//
+//         const designStylePromise = pool.query(
+//             'INSERT INTO item_design_styles (itemId, designStyleId) VALUES (?, ?)',
+//             [itemId, designStyle]
+//         );
+//
+//         await Promise.all([...imagePromises, colorPromise, brandPromise, roomTypePromise, designStylePromise]);
+//
+//         res.status(201).json({ message: 'Item created successfully' });
+//     } catch (error) {
+//         console.error(error);
+//         res.status(500).json({ error: 'Server error' });
+//     }
+// };
 exports.createItem = async (req, res) => {
-    const { name, category, description, color, brand, roomType, designStyle } = req.body;
+    const { name, category, description, brand, roomType, designStyle, colors } = req.body;
     const images = req.files;
 
     if (!name || !category || !description || !images) {
@@ -50,10 +101,12 @@ exports.createItem = async (req, res) => {
             );
         });
 
-        const colorPromise = pool.query(
-            'INSERT INTO item_colors (itemId, colorId) VALUES (?, ?)',
-            [itemId, color]
-        );
+        const colorPromises = colors.map(colorId => {
+            return pool.query(
+                'INSERT INTO item_colors (itemId, colorId) VALUES (?, ?)',
+                [itemId, colorId]
+            );
+        });
 
         const brandPromise = pool.query(
             'INSERT INTO item_brands (itemId, brandId) VALUES (?, ?)',
@@ -70,7 +123,7 @@ exports.createItem = async (req, res) => {
             [itemId, designStyle]
         );
 
-        await Promise.all([...imagePromises, colorPromise, brandPromise, roomTypePromise, designStylePromise]);
+        await Promise.all([...imagePromises, ...colorPromises, brandPromise, roomTypePromise, designStylePromise]);
 
         res.status(201).json({ message: 'Item created successfully' });
     } catch (error) {
@@ -79,7 +132,6 @@ exports.createItem = async (req, res) => {
     }
 };
 
-// Update an item
 exports.updateItem = async (req, res) => {
     const { id } = req.params;
     const { name, categoryId, description } = req.body;
@@ -288,5 +340,24 @@ exports.uploadItemImages = async (req, res) => {
     } catch (error) {
         console.error('Error uploading images:', error);
         res.status(500).json({ message: 'Error uploading images' });
+    }
+};
+exports.getItemColors = async (req, res) => {
+    try {
+        const itemId = req.params.id;
+        const [rows] = await pool.query(
+            `SELECT colors.*
+             FROM item_colors
+             JOIN colors ON item_colors.colorId = colors.id
+             WHERE item_colors.itemId = ?`,
+            [itemId]
+        );
+        if (rows.length === 0) {
+            return res.status(404).json({ message: 'Không tìm thấy màu cho sản phẩm này' });
+        }
+        res.json(rows);
+    } catch (error) {
+        console.error('Lỗi khi lấy màu của sản phẩm:', error);
+        res.status(500).json({ message: 'Lỗi server' });
     }
 };

@@ -29,6 +29,7 @@ module.exports = (pool) => {
     router.get('/:id/roomType', itemController.getItemRoomType);
     router.get('/:id/designStyle', itemController.getItemDesignStyle);
     router.get('/:id/related', itemController.getRelatedItems);
+    router.get('/:id/colors', itemController.getItemColors);
     // Gắn màu sắc cho sản phẩm
     // router.post('/:itemId/colors', itemController.addColorToItem);
 

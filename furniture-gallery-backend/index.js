@@ -10,8 +10,9 @@ const categoryRoutes = require('./routes/categoryRoutes');
 const roomTypeRoutes = require('./routes/roomTypeRoutes');
 const designStyleRoutes = require('./routes/designStyleRoutes');
 const itemImageRoutes = require('./routes/itemImageRoutes');
-const userRoutes = require('./routes/userRoutes');
 const uploadRoutes = require('./routes/uploadRoutes');
+const profileRoutes = require('./routes/profileRoutes');
+const searchRoutes = require('./routes/searchRoutes');
 
 const app = express();
 const port = process.env.PORT || 5001;
@@ -37,14 +38,15 @@ const pool = require('./config/db');
 // Sử dụng route
 app.use('/api/items', itemRoutes(pool));
 app.use('/api/auth', authRoutes(pool));
+app.use('/api/profile', profileRoutes);
 app.use('/api/colors', colorRoutes);
 app.use('/api/brands', brandRoutes(pool)); // Truyền pool vào brandRoutes
 app.use('/api/categories', categoryRoutes(pool));
 app.use('/api/roomTypes', roomTypeRoutes(pool));
 app.use('/api/designStyles', designStyleRoutes(pool));
 app.use('/api/itemImages', itemImageRoutes(pool));
-app.use('/api/users', userRoutes(pool));
 app.use('/api', uploadRoutes);
+app.use('/api', searchRoutes);
 
 
 // Xử lý lỗi (giữ nguyên)

@@ -15,5 +15,6 @@ router.put('/:id', upload.single('image'), colorController.updateColor);
 router.delete('/:id', colorController.deleteColor);
 router.post('/addColor', colorController.addColorToItem);
 router.get('/:colorId/items', colorController.getItemsByColor);
+// router.post('/addColorsToItem', colorController.addColorsToItem);
 
 module.exports = router;
