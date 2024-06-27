@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import ReCAPTCHA from 'react-google-recaptcha';
 
 const Register = () => {
     const [fullName, setFullName] = useState('');
@@ -11,6 +12,7 @@ const Register = () => {
     const [phone, setPhone] = useState('');
     const [address, setAddress] = useState('');
     const [error, setError] = useState('');
+    const [recaptchaToken, setRecaptchaToken] = useState(null);
     const navigate = useNavigate();
 
     const validateEmail = (email) => {
@@ -40,6 +42,10 @@ const Register = () => {
             setError('Vui lòng điền số điện thoại');
             return;
         }
+        if (!recaptchaToken) {
+            setError('Vui lòng xác nhận bạn không phải là robot');
+            return;
+        }
 
         try {
             const response = await axios.post('http://localhost:5001/api/auth/register', {
@@ -48,7 +54,8 @@ const Register = () => {
                 email,
                 password,
                 phone,
-                address
+                address,
+                recaptchaToken,
             });
 
             if (response.status === 201) {
@@ -57,6 +64,10 @@ const Register = () => {
         } catch (err) {
             setError('Đăng ký thất bại. Vui lòng thử lại.');
         }
+    };
+
+    const handleRecaptchaChange = (token) => {
+        setRecaptchaToken(token);
     };
 
     return (
@@ -125,6 +136,12 @@ const Register = () => {
                             value={address}
                             onChange={(e) => setAddress(e.target.value)}
                             className="border rounded w-full py-2 px-3 text-gray-700"
+                        />
+                    </div>
+                    <div className="mb-4">
+                        <ReCAPTCHA
+                            sitekey="6Ld8VwIqAAAAAE1SGyC0BQbLFddn3zcNlfX-21ie"
+                            onChange={handleRecaptchaChange}
                         />
                     </div>
                     {error && <p className="text-red-500 text-xs italic">{error}</p>}

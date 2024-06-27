@@ -15,7 +15,7 @@ const banners = [
 
 const BannerCarousel = () => {
     return (
-        <Carousel autoPlay infiniteLoop showThumbs={false}>
+        <Carousel autoPlay infiniteLoop showThumbs={false} showStatus={false} showIndicators={false} showArrows={false}>
             {banners.map((banner) => (
                 <div key={banner.id} className="px-4">
                     <img src={banner.src} alt={banner.alt} className="rounded-lg"/>

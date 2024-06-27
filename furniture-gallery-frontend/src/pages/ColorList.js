@@ -44,23 +44,27 @@ const ColorList = () => {
 
     return (
         <div>
-            <div className="p-4 pb-24">
+            <div className="p-4 -mt-16 text-right">
                 <div className="text-xs">Vui lòng chọn</div>
-                <div className="text-xl font-bold mb-2">CHỌN THEO MÃ MÀU</div>
+                <div className="text-xl font-bold text-blue-500">MÃ MÀU</div>
+            </div>
+            <div className="p-4 pb-24 -mt-4 text-right">
+
                 <div className="grid grid-cols-2 gap-4">
-                    {colors.map((color) => (
+                {colors.map((color) => (
                         <div
                             key={color.id}
-                            className="rounded-lg overflow-hidden shadow-md cursor-pointer"
+                            className="cursor-pointer"
                             onClick={() => handleColorClick(color)}
                         >
                             <img
                                 src={`http://localhost:5001/uploads/${color.imageUrl}`}
                                 alt={color.name}
-                                className="w-full h-32 object-cover"
+                                className="w-full object-cover rounded-lg"
                             />
-                            <div className="p-2 text-center font-bold">{color.name}</div>
+                            <div className="p-2 text-xs font-medium">{color.name}</div>
                         </div>
+
                     ))}
                 </div>
             </div>

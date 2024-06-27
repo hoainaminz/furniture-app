@@ -100,7 +100,7 @@ const ManageColors = () => {
     );
 
     return (
-        <div className="container mx-auto p-4 h-auto">
+        <div className="container mx-auto p-4 h-auto pb-24">
             <h1 className="text-2xl font-bold mb-4">Quản lý mã màu</h1>
 
             <div className="mb-4 flex flex-col">

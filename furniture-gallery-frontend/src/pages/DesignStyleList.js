@@ -45,9 +45,11 @@ const DesignStyleList = () => {
 
     return (
         <div>
-            <div className="p-4 pb-24">
+            <div className="p-4 pb-12 -mt-16 text-right">
                 <div className="text-xs">Vui lòng chọn</div>
-                <div className="text-xl font-bold mb-2">CHỌN THEO PHONG CÁCH NỘI THẤT</div>
+                <div className="text-xl font-bold mb-2 text-blue-500">PHONG CÁCH NỘI THẤT</div>
+            </div>
+            <div className="p-4 pb-24 -mt-4 text-right">
                 <div className="grid grid-cols-2 gap-4">
                     {designStyles.map((designStyle) => (
                         <div
@@ -58,9 +60,9 @@ const DesignStyleList = () => {
                             <img
                                 src={`http://localhost:5001/uploads/${designStyle.imageUrl}`}
                                 alt={designStyle.name}
-                                className="w-full h-32 object-cover"
+                                className="w-full h-32 object-cover rounded-lg"
                             />
-                            <div className="p-2 text-center font-bold">{designStyle.name}</div>
+                            <div className="p-2 text-xs font-medium">{designStyle.name}</div>
                         </div>
                     ))}
                 </div>

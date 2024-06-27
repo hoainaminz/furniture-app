@@ -1,7 +1,10 @@
+// src/App.js
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
 import { useTransition, animated } from '@react-spring/web';
 import Home from './pages/Home';
+import Contact from './pages/Contact';
+import Location from './pages/Location';
 import ItemListByColor from './pages/ItemListByColor';
 import ItemDetail from './pages/ItemDetail';
 import ColorList from './pages/ColorList';
@@ -17,11 +20,9 @@ import ItemListByBrand from './pages/ItemListByBrand';
 import DesignStyleList from './pages/DesignStyleList';
 import ItemListByDesignStyle from './pages/ItemListByDesignStyle';
 import Footer from './components/Footer';
-import Header from './components/Header'; // Import Header
+import Header from './components/Header';
 import './App.css'; // Import file CSS của bạn
-//admin
 import AdminDashboard from './admin/AdminDashboard';
-import ManageUsers from './admin/ManageUsers';
 import ManageItems from './admin/ManageItems';
 import CreateItem from './admin/CreateItem';
 import UpdateItem from './admin/UpdateItem';
@@ -33,13 +34,15 @@ import ManageRoomType from "./admin/ManageRoomType";
 import ManageBrand from "./admin/ManageBrand";
 import ProfileManager from "./pages/ProfileManager";
 import Offcanvas from "./components/Offcanvas";
+import ScrollToTop from "./components/ScrollToTop";
 
 function App() {
     return (
         <div className="app-container">
             <Router>
-                <HeaderWrapper />
                 <AnimatedRoutes />
+                <ScrollToTop />
+                <HeaderWrapper />
                 <FooterWrapper />
             </Router>
         </div>
@@ -67,14 +70,16 @@ const AnimatedRoutes = () => {
     const transitions = useTransition(location, {
         from: { opacity: 0 },
         enter: { opacity: 1 },
-        leave: { opacity: 0 },
-        config: { duration: 300, easing: (t) => t * (2 - t) },
+        leave: { display: 'none' },
+        config: { duration: 700, easing: (t) => t * (2 - t) },
     });
 
     return transitions((props, item) => (
         <animated.div style={props} className="page">
             <Routes location={item}>
                 <Route path="/" element={<Home />} />
+                <Route path="/contact" element={<Contact />} />
+                <Route path="/address" element={<Location />} />
                 <Route path="/search" element={<Search />} />
                 <Route path="/colors" element={<ColorList />} />
                 <Route path="/colors/:colorId/items" element={<ItemListByColor />} />
@@ -92,7 +97,6 @@ const AnimatedRoutes = () => {
                 <Route path="/designStyles/:designStyleId/items" element={<ItemListByDesignStyle />} />
                 {/*admin*/}
                 <Route path="/admin" element={<ProtectedRoute><AdminDashboard /></ProtectedRoute>} />
-                <Route path="/admin/users" element={<ProtectedRoute><ManageUsers /></ProtectedRoute>} />
                 <Route path="/admin/items" element={<ProtectedRoute><ManageItems /></ProtectedRoute>} />
                 <Route path="/admin/create-item" element={<ProtectedRoute><CreateItem /></ProtectedRoute>} />
                 <Route path="/admin/edit-item/:id" element={<ProtectedRoute><UpdateItem /></ProtectedRoute>} />
@@ -101,7 +105,6 @@ const AnimatedRoutes = () => {
                 <Route path="/admin/designstyles" element={<ProtectedRoute><ManageDesignStyle /></ProtectedRoute>} />
                 <Route path="/admin/roomtypes" element={<ProtectedRoute><ManageRoomType /></ProtectedRoute>} />
                 <Route path="/admin/brands" element={<ProtectedRoute><ManageBrand /></ProtectedRoute>} />
-
             </Routes>
         </animated.div>
     ));

@@ -44,9 +44,11 @@ const CategoryList = () => {
 
     return (
         <div>
-            <div className="p-4 pb-24">
+            <div className="p-4 pb-6 text-right -mt-16">
                 <div className="text-xs">Vui lòng chọn</div>
-                <div className="text-xl font-bold mb-2">CHỌN THEO LOẠI SẢN PHẨM</div>
+                <div className="text-xl font-bold mb-6 text-blue-500">LOẠI SẢN PHẨM</div>
+            </div>
+            <div className="p-4 pb-24 -mt-4 text-right">
                 <div className="grid grid-cols-2 gap-4">
                     {categories.map((category) => (
                         <div
@@ -57,9 +59,9 @@ const CategoryList = () => {
                             <img
                                 src={`http://localhost:5001/uploads/${category.imageUrl}`}
                                 alt={category.name}
-                                className="w-full h-32 object-cover"
+                                className="w-full h-32 object-cover rounded-lg"
                             />
-                            <div className="p-2 text-center font-bold">{category.name}</div>
+                            <div className="p-2 font-medium">{category.name}</div>
                         </div>
                     ))}
                 </div>

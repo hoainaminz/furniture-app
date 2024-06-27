@@ -75,8 +75,8 @@ const ManageItems = () => {
                     <tr>
                         <th className="py-2 px-4 border-b-2 border-gray-300">ID</th>
                         <th className="py-2 px-4 border-b-2 border-gray-300">Tên sản phẩm</th>
-                        <th className="py-2 px-4 border-b-2 border-gray-300">Hình ảnh</th>
-                        <th className="py-2 px-4 border-b-2 border-gray-300">Mã màu</th>
+                        {/*<th className="py-2 px-4 border-b-2 border-gray-300">Hình ảnh</th>*/}
+                        {/*<th className="py-2 px-4 border-b-2 border-gray-300">Mã màu</th>*/}
                         <th className="py-2 px-4 border-b-2 border-gray-300 sticky right-0 bg-white">Hành động</th>
                     </tr>
                     </thead>
@@ -85,8 +85,8 @@ const ManageItems = () => {
                         <tr key={item.id}>
                             <td className="py-2 px-4 border-b whitespace-nowrap">{item.id}</td>
                             <td className="py-2 px-4 border-b whitespace-nowrap">{item.name}</td>
-                            <td className="py-2 px-4 border-b whitespace-nowrap">{item.imageUrl}</td>
-                            <td className="py-2 px-4 border-b whitespace-nowrap">{item.colorCode}</td>
+                            {/*<td className="py-2 px-4 border-b whitespace-nowrap">{item.imageUrl}</td>*/}
+                            {/*<td className="py-2 px-4 border-b whitespace-nowrap">{item.colorCode}</td>*/}
                             <td className="py-2 px-4 border-b whitespace-nowrap sticky right-0 bg-white flex">
                                 <Link
                                     to={`/admin/edit-item/${item.id}`}

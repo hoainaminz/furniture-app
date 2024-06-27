@@ -14,27 +14,31 @@ const Header = ({ user }) => {
 
     return (
         <>
-            <header className="sticky top-0 z-50 flex justify-between items-center p-4 bg-white shadow-md">
+            <header className={`header rounded-lg sticky top-0 z-50 flex justify-between items-center p-4 ${location.pathname === '/' ? 'bg-white shadow-md' : 'bg-transparent w-1/2'}`}>
                 {location.pathname === '/' ? (
                     <button onClick={() => setIsOffcanvasOpen(true)} className="p-2">
                         <Bars3Icon className="h-6 w-6 text-black" />
                     </button>
                 ) : (
-                    <button onClick={() => navigate(-1)} className="p-2">
+                    <button onClick={() => navigate(-1)} className="p-2 back-button">
                         <ArrowLeftIcon className="h-6 w-6 text-black" />
                     </button>
                 )}
-                <div className="flex justify-center flex-grow">
-                    <img
-                        src={logo}
-                        alt="Logo"
-                        className="h-8 cursor-pointer"
-                        onClick={() => navigate('/')}
-                    />
-                </div>
-                <button onClick={() => setIsSearchModalOpen(true)} className="p-2"> {/* Mở modal tìm kiếm */}
-                    <MagnifyingGlassIcon className="h-6 w-6 text-black" />
-                </button>
+                {location.pathname === '/' && (
+                    <div className="flex justify-center flex-grow">
+                        <img
+                            src={logo}
+                            alt="Logo"
+                            className="h-10 cursor-pointer"
+                            onClick={() => navigate('/')}
+                        />
+                    </div>
+                )}
+                {location.pathname === '/' && (
+                    <button onClick={() => setIsSearchModalOpen(true)} className="p-2"> {/* Mở modal tìm kiếm */}
+                        <MagnifyingGlassIcon className="h-6 w-6 text-black" />
+                    </button>
+                )}
             </header>
             <Offcanvas isOpen={isOffcanvasOpen} onClose={() => setIsOffcanvasOpen(false)} user={user} />
             <SearchModal isOpen={isSearchModalOpen} onClose={() => setIsSearchModalOpen(false)} /> {/* Thêm modal tìm kiếm */}

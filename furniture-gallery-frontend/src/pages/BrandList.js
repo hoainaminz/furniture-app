@@ -45,9 +45,9 @@ const BrandList = () => {
 
     return (
         <div>
-            <div className="p-4 pb-24">
+            <div className="p-4 pb-24 -mt-16 text-right">
                 <div className="text-xs">Vui lòng chọn</div>
-                <div className="text-xl font-bold mb-2">CHỌN THEO HÃNG</div>
+                <div className="text-xl font-bold mb-2 text-blue-500">HÃNG VẬT LIỆU</div>
                 <div className="grid grid-cols-1 gap-4">
                     {brands.map((brand) => (
                         <div
@@ -60,7 +60,7 @@ const BrandList = () => {
                                 alt={brand.name}
                                 className="w-full h-32 object-cover"
                             />
-                            <div className="p-2 text-center font-bold">{brand.name}</div>
+                            {/*<div className="p-2">{brand.name}</div>*/}
                         </div>
                     ))}
                 </div>
