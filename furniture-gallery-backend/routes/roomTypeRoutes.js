@@ -21,6 +21,6 @@ module.exports = (pool) => {
 
     // Route gán RoomType cho Item
     router.post('/addRoomtype', roomTypeController.addRoomTypeToItem);
-    router.get('/:roomTypeId/items', roomTypeController.getItemsByRoomType);
+    router.get('/:roomTypeId/items', roomTypeController.getItemsByRoomType); // Ensure the param name matches
     return router;
 };

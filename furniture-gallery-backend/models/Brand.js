@@ -1,14 +1,14 @@
 const pool = require('../config/db');
 const db = require("../config/db");
-const getItemsByBrand = async (brandId) => {
-    const [rows] = await db.query(`
-        SELECT items.*
-        FROM items
-        JOIN item_brands ON items.id = item_brands.itemId
-        WHERE item_brands.brandId = ?
-    `, [brandId]);
-    return rows;
-};
+// const getItemsByBrand = async (brandId) => {
+//     const [rows] = await db.query(`
+//         SELECT items.*
+//         FROM items
+//         JOIN item_brands ON items.id = item_brands.itemId
+//         WHERE item_brands.brandId = ?
+//     `, [brandId]);
+//     return rows;
+// };
 const Brand = {
     getAll: async () => {
         try {
@@ -75,7 +75,23 @@ const Brand = {
             throw err;
         }
     },
-    getItemsByBrand,
+    // getItemsByBrand,
+    getItemsByBrand: async (brandId, page, limit) => { // Nhận page và limit
+        try {
+            const offset = (page - 1) * limit;
+            const [rows] = await db.query(
+                `SELECT i.* 
+       FROM items i
+       JOIN item_brands ic ON i.id = ic.itemId
+       WHERE ic.brandId = ?
+       LIMIT ? OFFSET ?`,
+                [brandId, limit, offset]
+            );
+            return rows;
+        } catch (err) {
+            throw err;
+        }
+    },
 };
 
 module.exports = Brand;

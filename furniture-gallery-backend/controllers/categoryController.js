@@ -2,6 +2,7 @@ const Category = require('../models/Category');
 const logger = require('../config/logger');
 const multer = require('multer');
 const path = require('path');
+const fs = require('fs');
 
 const storage = multer.diskStorage({
     destination: function (req, file, cb) {
@@ -111,15 +112,38 @@ exports.deleteCategory = async (req, res) => {
     }
 };
 
+// exports.getItemsByCategory = async (req, res) => {
+//     try {
+//         const categoryId = req.params.categoryId;
+//         const [rows] = await req.pool.execute('SELECT * FROM items WHERE categoryId = ?', [categoryId]);
+//         // if (rows.length === 0) {
+//         //     return res.status(404).json({ message: 'Không tìm thấy sản phẩm cho danh mục này' });
+//         // }
+//         res.json(rows);
+//     } catch (error) {
+//         res.status(500).json({ message: 'Lỗi server' });
+//     }
+// };
+
 exports.getItemsByCategory = async (req, res) => {
     try {
         const categoryId = req.params.categoryId;
-        const [rows] = await req.pool.execute('SELECT * FROM items WHERE categoryId = ?', [categoryId]);
-        // if (rows.length === 0) {
-        //     return res.status(404).json({ message: 'Không tìm thấy sản phẩm cho danh mục này' });
-        // }
+        const page = parseInt(req.query.page) || 1;
+        const limit = 10;
+        const offset = (page - 1) * limit;
+
+        console.log('categoryId:', categoryId, 'page:', page, 'limit:', limit, 'offset:', offset);
+
+        const [rows] = await req.pool.execute(
+            'SELECT * FROM items WHERE categoryId = ? LIMIT ? OFFSET ?',
+            [categoryId, limit, offset]
+        );
+
+        console.log('rows:', rows);
+
         res.json(rows);
     } catch (error) {
+        console.error('Lỗi khi lấy sản phẩm theo danh mục:', error);
         res.status(500).json({ message: 'Lỗi server' });
     }
 };

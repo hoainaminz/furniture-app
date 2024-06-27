@@ -130,11 +130,23 @@ exports.addBrandToItem = async (req, res) => {
         res.status(500).json({ message: 'Error adding Brand to item' });
     }
 };
-
+//
+// exports.getItemsByBrand = async (req, res) => {
+//     try {
+//         const brandId = req.params.brandId;
+//         const items = await Brand.getItemsByBrand(brandId);
+//         res.json(items);
+//     } catch (error) {
+//         res.status(500).json({ message: error.message });
+//     }
+// };
 exports.getItemsByBrand = async (req, res) => {
     try {
-        const brandId = req.params.BrandId;
-        const items = await Brand.getItemsByBrand(brandId);
+        const brandId = req.params.brandId;
+        const page = parseInt(req.query.page) || 1;
+        const limit = 10;
+
+        const items = await Brand.getItemsByBrand(brandId, page, limit);
         res.json(items);
     } catch (error) {
         res.status(500).json({ message: error.message });

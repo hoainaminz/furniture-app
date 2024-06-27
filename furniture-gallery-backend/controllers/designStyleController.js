@@ -134,7 +134,10 @@ exports.addDesignStyleToItem = async (req, res) => {
 exports.getItemsByDesignStyle = async (req, res) => {
     try {
         const designStyleId = req.params.designStyleId;
-        const items = await DesignStyle.getItemsByDesignStyle(designStyleId);
+        const page = parseInt(req.query.page) || 1;
+        const limit = 10;
+
+        const items = await DesignStyle.getItemsByDesignStyle(designStyleId, page, limit);
         res.json(items);
     } catch (error) {
         res.status(500).json({ message: error.message });

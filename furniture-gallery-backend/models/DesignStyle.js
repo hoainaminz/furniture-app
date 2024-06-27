@@ -1,14 +1,14 @@
 const pool = require('../config/db');
 const db = require("../config/db");
-const getItemsByDesignStyle = async (designStyleId) => {
-    const [rows] = await db.query(`
-        SELECT items.*
-        FROM items
-        JOIN item_design_styles ON items.id = item_design_styles.itemId
-        WHERE item_design_styles.designStyleId = ?
-    `, [designStyleId]);
-    return rows;
-};
+// const getItemsByDesignStyle = async (designStyleId) => {
+//     const [rows] = await db.query(`
+//         SELECT items.*
+//         FROM items
+//         JOIN item_design_styles ON items.id = item_design_styles.itemId
+//         WHERE item_design_styles.designStyleId = ?
+//     `, [designStyleId]);
+//     return rows;
+// };
 const DesignStyle = {
     getAll: async () => {
         try {
@@ -72,7 +72,22 @@ const DesignStyle = {
             throw err;
         }
     },
-    getItemsByDesignStyle,
+    getItemsByDesignStyle: async (designStyleId, page, limit) => { // Nhận page và limit
+        try {
+            const offset = (page - 1) * limit;
+            const [rows] = await db.query(
+                `SELECT i.* 
+       FROM items i
+       JOIN item_design_styles ic ON i.id = ic.itemId
+       WHERE ic.designStyleId = ?
+       LIMIT ? OFFSET ?`,
+                [designStyleId, limit, offset]
+            );
+            return rows;
+        } catch (err) {
+            throw err;
+        }
+    },
 };
 
 module.exports = DesignStyle;

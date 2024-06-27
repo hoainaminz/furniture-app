@@ -1,14 +1,14 @@
 const pool = require('../config/db');
 const db = require("../config/db");
-const getItemsByRoomType = async (roomTypeId) => {
-    const [rows] = await db.query(`
-        SELECT items.*
-        FROM items
-        JOIN item_room_types ON items.id = item_room_types.itemId
-        WHERE item_room_types.roomTypeId = ?
-    `, [roomTypeId]);
-    return rows;
-};
+// const getItemsByRoomType = async (roomTypeId) => {
+//     const [rows] = await db.query(`
+//         SELECT items.*
+//         FROM items
+//         JOIN item_room_types ON items.id = item_room_types.itemId
+//         WHERE item_room_types.roomTypeId = ?
+//     `, [roomTypeId]);
+//     return rows;
+// };
 const RoomType = {
     getAll: async () => {
         try {
@@ -72,7 +72,22 @@ const RoomType = {
             throw err;
         }
     },
-    getItemsByRoomType,
+    getItemsByRoomType: async (roomTypeId, page, limit) => { // Nhận page và limit
+        try {
+            const offset = (page - 1) * limit;
+            const [rows] = await db.query(
+                `SELECT i.* 
+       FROM items i
+       JOIN item_room_types ic ON i.id = ic.itemId
+       WHERE ic.roomTypeId = ?
+       LIMIT ? OFFSET ?`,
+                [roomTypeId, limit, offset]
+            );
+            return rows;
+        } catch (err) {
+            throw err;
+        }
+    },
 };
 
 module.exports = RoomType;

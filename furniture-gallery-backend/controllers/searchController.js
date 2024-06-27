@@ -3,14 +3,20 @@ const pool = require('../config/db');
 
 const searchItems = async (req, res) => {
     try {
-        const { keyword } = req.query;
+        const { keyword, page = 1, limit = 10 } = req.query;
+        const offset = (page - 1) * limit;
+
         if (!keyword) {
             return res.status(400).json({ message: 'Keyword is required' });
         }
 
         const [rows] = await pool.query(
-            `SELECT * FROM items WHERE name LIKE ? OR description LIKE ?`,
-            [`%${keyword}%`, `%${keyword}%`]
+            `SELECT items.*, item_images.imageUrl 
+             FROM items 
+             LEFT JOIN item_images ON items.id = item_images.itemId
+             WHERE items.name LIKE ? OR items.description LIKE ?
+             LIMIT ? OFFSET ?`,
+            [`%${keyword}%`, `%${keyword}%`, parseInt(limit), parseInt(offset)]
         );
 
         if (rows.length === 0) {

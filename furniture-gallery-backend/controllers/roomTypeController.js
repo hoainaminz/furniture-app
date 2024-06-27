@@ -3,6 +3,7 @@ const logger = require('../config/logger');
 const multer = require('multer');
 const path = require('path');
 
+
 const storage = multer.diskStorage({
     destination: function (req, file, cb) {
         cb(null, 'public/uploads');
@@ -27,9 +28,9 @@ exports.getAllRoomTypes = async (req, res) => {
 exports.getRoomTypeById = async (req, res) => {
     const { id } = req.params;
     try {
-        const RoomType = await RoomType.getById(id);
-        if (RoomType) {
-            res.json(RoomType);
+        const roomType = await RoomType.getById(id);
+        if (roomType) {
+            res.json(roomType);
         } else {
             res.status(404).json({ message: 'Room type not found' });
         }
@@ -53,9 +54,9 @@ exports.createRoomType = [
         }
 
         try {
-            const RoomTypeId = await RoomType.create(name, imageUrl);
-            logger.info('Room type created with ID:', RoomTypeId);
-            res.status(201).json({ message: 'Room type created', RoomTypeId });
+            const roomTypeId = await RoomType.create(name, imageUrl);
+            logger.info('Room type created with ID:', roomTypeId);
+            res.status(201).json({ message: 'Room type created', roomTypeId });
         } catch (err) {
             logger.error('Error creating Room type:', err);
             res.status(500).json({ message: 'Error creating Room type' });
@@ -133,8 +134,11 @@ exports.addRoomTypeToItem = async (req, res) => {
 
 exports.getItemsByRoomType = async (req, res) => {
     try {
-        const RoomTypeId = req.params.RoomTypeId;
-        const items = await RoomType.getItemsByRoomType(RoomTypeId);
+        const roomTypeId = req.params.roomTypeId;
+        const page = parseInt(req.query.page) || 1;
+        const limit = 10;
+
+        const items = await RoomType.getItemsByRoomType(roomTypeId, page, limit);
         res.json(items);
     } catch (error) {
         res.status(500).json({ message: error.message });
