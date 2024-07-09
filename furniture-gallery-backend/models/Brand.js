@@ -83,7 +83,7 @@ const Brand = {
                 `SELECT i.* 
        FROM items i
        JOIN item_brands ic ON i.id = ic.itemId
-       WHERE ic.brandId = ?
+       WHERE ic.brandId = ? AND i.pending = 0
        LIMIT ? OFFSET ?`,
                 [brandId, limit, offset]
             );

@@ -79,7 +79,7 @@ const DesignStyle = {
                 `SELECT i.* 
        FROM items i
        JOIN item_design_styles ic ON i.id = ic.itemId
-       WHERE ic.designStyleId = ?
+       WHERE ic.designStyleId = ? AND i.pending = 0
        LIMIT ? OFFSET ?`,
                 [designStyleId, limit, offset]
             );

@@ -17,8 +17,6 @@ module.exports = (pool) => {
     // Các route hiện có
     router.get('/', itemController.getAllItems);
     router.get('/:id', itemController.getItemById);
-    // router.post('/', itemController.createItem);
-    // router.put('/:id', itemController.updateItem);
     router.post('/items', upload.array('images', 10), itemController.createItem);
     router.post('/', upload.array('images', 10), itemController.createItem);
     router.put('/:id', upload.array('images', 10), itemController.updateItem);
@@ -30,8 +28,7 @@ module.exports = (pool) => {
     router.get('/:id/designStyle', itemController.getItemDesignStyle);
     router.get('/:id/related', itemController.getRelatedItems);
     router.get('/:id/colors', itemController.getItemColors);
-    // Gắn màu sắc cho sản phẩm
-    // router.post('/:itemId/colors', itemController.addColorToItem);
+    router.get('/user/:userId/items', authenticateJWT, itemController.getUserItems);
 
     return router;
 };

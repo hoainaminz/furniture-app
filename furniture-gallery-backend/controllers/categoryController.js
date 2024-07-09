@@ -131,16 +131,10 @@ exports.getItemsByCategory = async (req, res) => {
         const page = parseInt(req.query.page) || 1;
         const limit = 10;
         const offset = (page - 1) * limit;
-
-        console.log('categoryId:', categoryId, 'page:', page, 'limit:', limit, 'offset:', offset);
-
         const [rows] = await req.pool.execute(
-            'SELECT * FROM items WHERE categoryId = ? LIMIT ? OFFSET ?',
+            'SELECT * FROM items WHERE categoryId = ? AND pending = 0 LIMIT ? OFFSET ?',
             [categoryId, limit, offset]
         );
-
-        console.log('rows:', rows);
-
         res.json(rows);
     } catch (error) {
         console.error('Lỗi khi lấy sản phẩm theo danh mục:', error);

@@ -5,7 +5,8 @@ const path = require('path');
 
 exports.getAllItems = async (req, res) => {
     try {
-        const items = await Item.getAll();
+        const userId = req.user ? req.user.id : null;
+        const items = await Item.getAll(userId);
         res.json(items);
     } catch (err) {
         console.error('Lỗi khi lấy danh sách sản phẩm:', err);
@@ -13,22 +14,64 @@ exports.getAllItems = async (req, res) => {
     }
 };
 
+// exports.getItemById = async (req, res) => {
+//     try {
+//         const itemId = req.params.id;
+//         const item = await Item.getById(itemId);
+//         if (!item) {
+//             return res.status(404).json({ message: 'Không tìm thấy sản phẩm' });
+//         }
+//         res.json(item);
+//     } catch (err) {
+//         console.error('Lỗi khi lấy thông tin sản phẩm:', err);
+//         res.status(500).json({ message: 'Lỗi server' });
+//     }
+// };
 exports.getItemById = async (req, res) => {
+    const { id } = req.params;
+
     try {
-        const itemId = req.params.id;
-        const item = await Item.getById(itemId);
-        if (!item) {
-            return res.status(404).json({ message: 'Không tìm thấy sản phẩm' });
+        const [item] = await req.pool.query('SELECT * FROM items WHERE id = ? AND pending = 0', [id]);
+
+        if (item.length === 0) {
+            return res.status(404).json({ message: 'Item not found' });
         }
-        res.json(item);
-    } catch (err) {
-        console.error('Lỗi khi lấy thông tin sản phẩm:', err);
-        res.status(500).json({ message: 'Lỗi server' });
+
+        console.log('Fetched item:', item[0]); // Thêm log để kiểm tra dữ liệu
+
+        res.json(item[0]);
+    } catch (error) {
+        console.error('Error fetching item:', error);
+        res.status(500).json({ message: 'Server error' });
+    }
+};
+
+exports.getUserItems = async (req, res) => {
+    const { userId } = req.params;
+
+    try {
+        const itemsQuery = `
+            SELECT items.* 
+            FROM items 
+            JOIN user_items ON items.id = user_items.itemId 
+            WHERE user_items.userId = ?
+        `;
+
+        const [items] = await req.pool.execute(itemsQuery, [userId]);
+
+        if (items.length === 0) {
+            return res.status(404).json({ message: 'Không tìm thấy sản phẩm nào của người dùng này' });
+        }
+
+        res.json(items);
+    } catch (error) {
+        console.error('Error fetching user items:', error);
+        res.status(500).json({ message: 'Failed to fetch user items' });
     }
 };
 
 // exports.createItem = async (req, res) => {
-//     const { name, category, description, color, brand, roomType, designStyle } = req.body;
+//     const { name, category, description, brand, roomType, designStyle, colors, pending } = req.body;
 //     const images = req.files;
 //
 //     if (!name || !category || !description || !images) {
@@ -37,8 +80,8 @@ exports.getItemById = async (req, res) => {
 //
 //     try {
 //         const [itemResult] = await pool.query(
-//             'INSERT INTO items (name, categoryId, description) VALUES (?, ?, ?)',
-//             [name, category, description]
+//             'INSERT INTO items (name, categoryId, description, pending) VALUES (?, ?, ?, ?)',
+//             [name, category, description, pending]
 //         );
 //
 //         const itemId = itemResult.insertId;
@@ -50,10 +93,12 @@ exports.getItemById = async (req, res) => {
 //             );
 //         });
 //
-//         const colorPromise = pool.query(
-//             'INSERT INTO item_colors (itemId, colorId) VALUES (?, ?)',
-//             [itemId, color]
-//         );
+//         const colorPromises = colors.map(colorId => {
+//             return pool.query(
+//                 'INSERT INTO item_colors (itemId, colorId) VALUES (?, ?)',
+//                 [itemId, colorId]
+//             );
+//         });
 //
 //         const brandPromise = pool.query(
 //             'INSERT INTO item_brands (itemId, brandId) VALUES (?, ?)',
@@ -70,7 +115,7 @@ exports.getItemById = async (req, res) => {
 //             [itemId, designStyle]
 //         );
 //
-//         await Promise.all([...imagePromises, colorPromise, brandPromise, roomTypePromise, designStylePromise]);
+//         await Promise.all([...imagePromises, ...colorPromises, brandPromise, roomTypePromise, designStylePromise]);
 //
 //         res.status(201).json({ message: 'Item created successfully' });
 //     } catch (error) {
@@ -81,6 +126,9 @@ exports.getItemById = async (req, res) => {
 exports.createItem = async (req, res) => {
     const { name, category, description, brand, roomType, designStyle, colors } = req.body;
     const images = req.files;
+    const userId = req.user.userId; // Lấy userId từ req.user sau khi xác thực JWT
+    const isAdmin = req.user.isAdmin; // Lấy isAdmin từ req.user sau khi xác thực JWT
+    const pending = isAdmin ? 0 : 1; // Nếu là admin thì pending = 0, nếu là user thì pending = 1
 
     if (!name || !category || !description || !images) {
         return res.status(400).json({ error: 'All fields are required' });
@@ -88,8 +136,8 @@ exports.createItem = async (req, res) => {
 
     try {
         const [itemResult] = await pool.query(
-            'INSERT INTO items (name, categoryId, description) VALUES (?, ?, ?)',
-            [name, category, description]
+            'INSERT INTO items (name, categoryId, description, pending) VALUES (?, ?, ?, ?)',
+            [name, category, description, pending]
         );
 
         const itemId = itemResult.insertId;
@@ -125,73 +173,80 @@ exports.createItem = async (req, res) => {
 
         await Promise.all([...imagePromises, ...colorPromises, brandPromise, roomTypePromise, designStylePromise]);
 
+        if (!isAdmin) {
+            await pool.query(
+                'INSERT INTO user_items (userId, itemId) VALUES (?, ?)',
+                [userId, itemId]
+            );
+        }
+
         res.status(201).json({ message: 'Item created successfully' });
     } catch (error) {
         console.error(error);
         res.status(500).json({ error: 'Server error' });
     }
 };
-//
 // exports.updateItem = async (req, res) => {
-//     const itemId = req.params.id;
-//     const { name, categoryId, description, brand, roomType, designStyle, colors } = req.body;
+//     const { id } = req.params;
+//     const { name, categoryId, description, brand, roomType, designStyle, colors, pending } = req.body;
 //     const images = req.files;
 //
+//     if (!name || !categoryId || !description) {
+//         return res.status(400).json({ error: 'All fields are required' });
+//     }
+//
 //     try {
-//         // 1. Cập nhật bảng `items`
-//         await req.pool.execute(
-//             'UPDATE items SET name = ?, categoryId = ?, description = ? WHERE id = ?',
-//             [name, categoryId, description, itemId]
+//         // Cập nhật thông tin cơ bản của sản phẩm
+//         await pool.query(
+//             'UPDATE items SET name = ?, categoryId = ?, description = ?, pending = ? WHERE id = ?',
+//             [name, categoryId, description, pending, id]
 //         );
 //
-//         // 2. Cập nhật bảng `item_images`
-//         if (images && images.length > 0) {
-//             await req.pool.execute('DELETE FROM item_images WHERE itemId = ?', [itemId]);
-//             const imagePromises = images.map(image => req.pool.execute(
-//                 'INSERT INTO item_images (itemId, imageUrl) VALUES (?, ?)',
-//                 [itemId, image.filename]
-//             ));
-//             await Promise.all(imagePromises);
-//         }
-//
-//         // 3. Cập nhật bảng `item_colors`
-//         await req.pool.execute('DELETE FROM item_colors WHERE itemId = ?', [itemId]);
-//         if (colors && colors.length > 0) {
-//             const colorPromises = colors.map(colorId => req.pool.execute(
-//                 'INSERT INTO item_colors (itemId, colorId) VALUES (?, ?)',
-//                 [itemId, colorId]
-//             ));
+//         // Cập nhật màu sắc
+//         if (colors) {
+//             await pool.query('DELETE FROM item_colors WHERE itemId = ?', [id]);
+//             const colorPromises = colors.map(colorId => {
+//                 return pool.query('INSERT INTO item_colors (itemId, colorId) VALUES (?, ?)', [id, colorId]);
+//             });
 //             await Promise.all(colorPromises);
 //         }
 //
-//         // 4. Cập nhật bảng `item_brands`
-//         await req.pool.execute('DELETE FROM item_brands WHERE itemId = ?', [itemId]);
-//         if (brand) { // Kiểm tra xem có brand mới hay không
-//             await req.pool.execute(
-//                 'INSERT INTO item_brands (itemId, brandId) VALUES (?, ?)',
-//                 [itemId, brand]
-//             );
+//         // Cập nhật thương hiệu
+//         if (brand) {
+//             await pool.query('DELETE FROM item_brands WHERE itemId = ?', [id]);
+//             await pool.query('INSERT INTO item_brands (itemId, brandId) VALUES (?, ?)', [id, brand]);
 //         }
 //
-//         // 5. Cập nhật bảng `item_room_types`
-//         await req.pool.execute('DELETE FROM item_room_types WHERE itemId = ?', [itemId]);
-//         if (roomType) { // Kiểm tra xem có roomType mới hay không
-//             await req.pool.execute(
-//                 'INSERT INTO item_room_types (itemId, roomTypeId) VALUES (?, ?)',
-//                 [itemId, roomType]
-//             );
+//         // Cập nhật loại phòng
+//         if (roomType) {
+//             await pool.query('DELETE FROM item_room_types WHERE itemId = ?', [id]);
+//             await pool.query('INSERT INTO item_room_types (itemId, roomTypeId) VALUES (?, ?)', [id, roomType]);
 //         }
 //
-//         // 6. Cập nhật bảng `item_design_styles`
-//         await req.pool.execute('DELETE FROM item_design_styles WHERE itemId = ?', [itemId]);
-//         if (designStyle) { // Kiểm tra xem có designStyle mới hay không
-//             await req.pool.execute(
-//                 'INSERT INTO item_design_styles (itemId, designStyleId) VALUES (?, ?)',
-//                 [itemId, designStyle]
-//             );
+//         // Cập nhật phong cách thiết kế
+//         if (designStyle) {
+//             await pool.query('DELETE FROM item_design_styles WHERE itemId = ?', [id]);
+//             await pool.query('INSERT INTO item_design_styles (itemId, designStyleId) VALUES (?, ?)', [id, designStyle]);
 //         }
 //
-//         res.json({ message: 'Item updated successfully' });
+//         // Cập nhật hình ảnh
+//         if (images.length > 0) {
+//             const [oldImages] = await pool.query('SELECT imageUrl FROM item_images WHERE itemId = ?', [id]);
+//             oldImages.forEach((image) => {
+//                 const imagePath = path.join(__dirname, '../uploads', image.imageUrl);
+//                 if (fs.existsSync(imagePath)) {
+//                     fs.unlinkSync(imagePath);
+//                 }
+//             });
+//             await pool.query('DELETE FROM item_images WHERE itemId = ?', [id]);
+//
+//             const imagePromises = images.map(image => {
+//                 return pool.query('INSERT INTO item_images (itemId, imageUrl) VALUES (?, ?)', [id, image.filename]);
+//             });
+//             await Promise.all(imagePromises);
+//         }
+//
+//         res.status(200).json({ message: 'Item updated successfully' });
 //     } catch (error) {
 //         console.error('Error updating item:', error);
 //         res.status(500).json({ error: 'Server error' });
@@ -201,6 +256,8 @@ exports.updateItem = async (req, res) => {
     const { id } = req.params;
     const { name, categoryId, description, brand, roomType, designStyle, colors } = req.body;
     const images = req.files;
+    const isAdmin = req.user.isAdmin; // Lấy giá trị isAdmin từ middleware
+    const pending = isAdmin ? 0 : 1; // Nếu là admin thì pending = 0, nếu là user thì pending = 1
 
     if (!name || !categoryId || !description) {
         return res.status(400).json({ error: 'All fields are required' });
@@ -209,8 +266,8 @@ exports.updateItem = async (req, res) => {
     try {
         // Cập nhật thông tin cơ bản của sản phẩm
         await pool.query(
-            'UPDATE items SET name = ?, categoryId = ?, description = ? WHERE id = ?',
-            [name, categoryId, description, id]
+            'UPDATE items SET name = ?, categoryId = ?, description = ?, pending = ? WHERE id = ?',
+            [name, categoryId, description, pending, id]
         );
 
         // Cập nhật màu sắc
@@ -241,7 +298,7 @@ exports.updateItem = async (req, res) => {
         }
 
         // Cập nhật hình ảnh
-        if (images.length > 0) {
+        if (images && images.length > 0) {
             const [oldImages] = await pool.query('SELECT imageUrl FROM item_images WHERE itemId = ?', [id]);
             oldImages.forEach((image) => {
                 const imagePath = path.join(__dirname, '../uploads', image.imageUrl);
@@ -263,7 +320,42 @@ exports.updateItem = async (req, res) => {
         res.status(500).json({ error: 'Server error' });
     }
 };
-
+// exports.deleteItem = async (req, res) => {
+//     const itemId = req.params.id;
+//     const connection = await req.pool.getConnection();
+//
+//     try {
+//         await connection.beginTransaction();
+//
+//         // Xóa tất cả các hàng liên quan trong bảng item_brands
+//         await connection.query('DELETE FROM item_brands WHERE itemId = ?', [itemId]);
+//
+//         // Xóa tất cả các hàng liên quan trong bảng item_images (nếu có)
+//         await connection.query('DELETE FROM item_images WHERE itemId = ?', [itemId]);
+//
+//         // Xóa tất cả các hàng liên quan trong bảng item_colors (nếu có)
+//         await connection.query('DELETE FROM item_colors WHERE itemId = ?', [itemId]);
+//
+//         // Xóa tất cả các hàng liên quan trong bảng item_room_types (nếu có)
+//         await connection.query('DELETE FROM item_room_types WHERE itemId = ?', [itemId]);
+//
+//         // Xóa tất cả các hàng liên quan trong bảng item_design_styles (nếu có)
+//         await connection.query('DELETE FROM item_design_styles WHERE itemId = ?', [itemId]);
+//
+//         // Cuối cùng, xóa hàng trong bảng items
+//         await connection.query('DELETE FROM items WHERE id = ?', [itemId]);
+//
+//         await connection.commit();
+//
+//         res.status(200).json({ message: 'Item deleted successfully' });
+//     } catch (error) {
+//         await connection.rollback();
+//         console.error('Error deleting item:', error);
+//         res.status(500).json({ message: 'Error deleting item' });
+//     } finally {
+//         connection.release();
+//     }
+// };
 exports.deleteItem = async (req, res) => {
     const itemId = req.params.id;
     const connection = await req.pool.getConnection();
@@ -286,6 +378,9 @@ exports.deleteItem = async (req, res) => {
         // Xóa tất cả các hàng liên quan trong bảng item_design_styles (nếu có)
         await connection.query('DELETE FROM item_design_styles WHERE itemId = ?', [itemId]);
 
+        // Xóa tất cả các hàng liên quan trong bảng user_items (nếu có)
+        await connection.query('DELETE FROM user_items WHERE itemId = ?', [itemId]);
+
         // Cuối cùng, xóa hàng trong bảng items
         await connection.query('DELETE FROM items WHERE id = ?', [itemId]);
 
@@ -300,6 +395,7 @@ exports.deleteItem = async (req, res) => {
         connection.release();
     }
 };
+
 // Lấy các sản phẩm mới nhất
 exports.getLatestItems = async (req, res) => {
     try {

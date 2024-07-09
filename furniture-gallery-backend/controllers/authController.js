@@ -105,8 +105,8 @@ exports.login = [
                 return res.status(401).json({ message: 'Invalid credentials' });
             }
 
-            const token = jwt.sign({ userId: user.id, isAdmin: user.roleId === 1, fullName: user.fullName, avatar:user.avatar }, process.env.JWT_SECRET || 'your_jwt_secret', {
-                expiresIn: '1d',
+            const token = jwt.sign({ userId: user.id, isAdmin: user.roleId === 1, fullName: user.fullName, avatar:user.avatar, userId: user.id }, process.env.JWT_SECRET || 'your_jwt_secret', {
+                expiresIn: '7d',
             });
 
             logger.info('Login successful, token generated');
@@ -115,7 +115,8 @@ exports.login = [
                 username: user.username,
                 fullName: user.fullName,
                 roleId: user.roleId,
-                avatar: user.avatar
+                avatar: user.avatar,
+                userId: user.id
             });
 
         } catch (err) {

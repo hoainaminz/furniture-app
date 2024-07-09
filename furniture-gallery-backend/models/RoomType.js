@@ -72,15 +72,15 @@ const RoomType = {
             throw err;
         }
     },
-    getItemsByRoomType: async (roomTypeId, page, limit) => { // Nhận page và limit
+    getItemsByRoomType: async (roomTypeId, page, limit) => {
         try {
             const offset = (page - 1) * limit;
             const [rows] = await db.query(
                 `SELECT i.* 
-       FROM items i
-       JOIN item_room_types ic ON i.id = ic.itemId
-       WHERE ic.roomTypeId = ?
-       LIMIT ? OFFSET ?`,
+                FROM items i
+                JOIN item_room_types ic ON i.id = ic.itemId
+                WHERE ic.roomTypeId = ? AND i.pending = 0
+                LIMIT ? OFFSET ?`,
                 [roomTypeId, limit, offset]
             );
             return rows;

@@ -641,3 +641,143 @@
 {"level":"info","message":"Login successful, token generated","service":"user-service","timestamp":"2024-06-27 10:32:46"}
 {"level":"info","message":"Login request received:","password":"password","service":"user-service","timestamp":"2024-06-27 10:34:19","username":"yukii"}
 {"level":"info","message":"Login successful, token generated","service":"user-service","timestamp":"2024-06-27 10:34:19"}
+{"level":"info","message":"Login request received:","password":"password","service":"user-service","timestamp":"2024-06-27 16:05:29","username":"yukii"}
+{"level":"info","message":"Login successful, token generated","service":"user-service","timestamp":"2024-06-27 16:05:29"}
+{"level":"info","message":"Login request received:","password":"password","service":"user-service","timestamp":"2024-06-27 16:06:13","username":"hoainam"}
+{"level":"info","message":"Login successful, token generated","service":"user-service","timestamp":"2024-06-27 16:06:13"}
+{"level":"info","message":"Login request received:","password":"password","service":"user-service","timestamp":"2024-06-27 16:06:30","username":"yukii"}
+{"level":"info","message":"Login successful, token generated","service":"user-service","timestamp":"2024-06-27 16:06:30"}
+{"level":"info","message":"Login request received:","password":"password","service":"user-service","timestamp":"2024-06-28 10:33:40","username":"hoainam"}
+{"level":"info","message":"Login successful, token generated","service":"user-service","timestamp":"2024-06-28 10:33:40"}
+{"level":"info","message":"Login request received:","password":"password","service":"user-service","timestamp":"2024-06-28 10:34:17","username":"yukii"}
+{"level":"info","message":"Login successful, token generated","service":"user-service","timestamp":"2024-06-28 10:34:17"}
+{"level":"info","message":"Login request received:","password":"password","service":"user-service","timestamp":"2024-06-28 10:42:25","username":"hoainam"}
+{"level":"info","message":"Login successful, token generated","service":"user-service","timestamp":"2024-06-28 10:42:25"}
+{"level":"info","message":"Login request received:","password":"password","service":"user-service","timestamp":"2024-06-28 10:44:44","username":"hoainam"}
+{"level":"info","message":"Login successful, token generated","service":"user-service","timestamp":"2024-06-28 10:44:44"}
+{"level":"info","message":"Login request received:","password":"password","service":"user-service","timestamp":"2024-06-28 10:45:42","username":"yukii"}
+{"level":"info","message":"Login successful, token generated","service":"user-service","timestamp":"2024-06-28 10:45:42"}
+{"level":"info","message":"Login request received:","password":"password","service":"user-service","timestamp":"2024-06-28 10:45:55","username":"hoainam"}
+{"level":"info","message":"Login successful, token generated","service":"user-service","timestamp":"2024-06-28 10:45:55"}
+{"level":"info","message":"Login request received:","password":"password","service":"user-service","timestamp":"2024-06-28 10:54:14","username":"yukii"}
+{"level":"info","message":"Login successful, token generated","service":"user-service","timestamp":"2024-06-28 10:54:14"}
+{"level":"info","message":"Login request received:","password":"password","service":"user-service","timestamp":"2024-06-28 11:20:03","username":"hoainam"}
+{"level":"info","message":"Login successful, token generated","service":"user-service","timestamp":"2024-06-28 11:20:03"}
+{"level":"info","message":"Login request received:","password":"password","service":"user-service","timestamp":"2024-06-28 11:35:59","username":"hoainam"}
+{"level":"info","message":"Login successful, token generated","service":"user-service","timestamp":"2024-06-28 11:35:59"}
+{"level":"info","message":"Login request received:","password":"password","service":"user-service","timestamp":"2024-06-28 11:36:21","username":"yukii"}
+{"level":"info","message":"Login successful, token generated","service":"user-service","timestamp":"2024-06-28 11:36:21"}
+{"level":"info","message":"Login request received:","password":"password","service":"user-service","timestamp":"2024-06-28 11:36:49","username":"hoainam"}
+{"level":"info","message":"Login successful, token generated","service":"user-service","timestamp":"2024-06-28 11:36:49"}
+{"level":"info","message":"Login request received:","password":"password","service":"user-service","timestamp":"2024-06-28 11:43:32","username":"yukii"}
+{"level":"info","message":"Login successful, token generated","service":"user-service","timestamp":"2024-06-28 11:43:32"}
+{"level":"info","message":"Login request received:","password":"password","service":"user-service","timestamp":"2024-06-28 11:51:03","username":"hoainam"}
+{"level":"info","message":"Login successful, token generated","service":"user-service","timestamp":"2024-06-28 11:51:03"}
+{"imageUrl":"1719550278136.jpg","level":"info","message":"Create category request received:","name":"trần","service":"user-service","timestamp":"2024-06-28 11:51:18"}
+{"level":"info","message":"Category created with ID:","service":"user-service","timestamp":"2024-06-28 11:51:18"}
+{"level":"info","message":"Login request received:","password":"password","service":"user-service","timestamp":"2024-06-28 11:56:57","username":"yukii"}
+{"level":"info","message":"Login successful, token generated","service":"user-service","timestamp":"2024-06-28 11:56:57"}
+{"level":"info","message":"Login request received:","password":"password","service":"user-service","timestamp":"2024-06-28 12:10:36","username":"hoainam"}
+{"level":"info","message":"Login successful, token generated","service":"user-service","timestamp":"2024-06-28 12:10:36"}
+{"level":"info","message":"Login request received:","password":"password","service":"user-service","timestamp":"2024-06-28 14:20:18","username":"yukii"}
+{"level":"info","message":"Login successful, token generated","service":"user-service","timestamp":"2024-06-28 14:20:18"}
+{"level":"info","message":"Login request received:","password":"oassword","service":"user-service","timestamp":"2024-06-28 14:21:06","username":"hoainam"}
+{"level":"warn","message":"Invalid credentials - password mismatch","service":"user-service","timestamp":"2024-06-28 14:21:06"}
+{"level":"info","message":"Login request received:","password":"password","service":"user-service","timestamp":"2024-06-28 14:21:11","username":"hoainam"}
+{"level":"info","message":"Login successful, token generated","service":"user-service","timestamp":"2024-06-28 14:21:11"}
+{"imageUrl":"1719569511383-A12.jpg","level":"info","message":"Create color request received:","name":"A12","service":"user-service","timestamp":"2024-06-28 17:11:51"}
+{"level":"info","message":"Color created with ID:","service":"user-service","timestamp":"2024-06-28 17:11:51"}
+{"imageUrl":"1719569517249-A15.jpg","level":"info","message":"Create color request received:","name":"A15","service":"user-service","timestamp":"2024-06-28 17:11:57"}
+{"level":"info","message":"Color created with ID:","service":"user-service","timestamp":"2024-06-28 17:11:57"}
+{"imageUrl":"1719569521379-AH.jpg","level":"info","message":"Create color request received:","name":"AH","service":"user-service","timestamp":"2024-06-28 17:12:01"}
+{"level":"info","message":"Color created with ID:","service":"user-service","timestamp":"2024-06-28 17:12:01"}
+{"imageUrl":"1719569527153-LUX25.jpg","level":"info","message":"Create color request received:","name":"LUX25","service":"user-service","timestamp":"2024-06-28 17:12:07"}
+{"level":"info","message":"Color created with ID:","service":"user-service","timestamp":"2024-06-28 17:12:07"}
+{"imageUrl":"1719569532480-LUX24.jpg","level":"info","message":"Create color request received:","name":"LUX24","service":"user-service","timestamp":"2024-06-28 17:12:12"}
+{"level":"info","message":"Color created with ID:","service":"user-service","timestamp":"2024-06-28 17:12:12"}
+{"id":"1","imageUrl":"1719569541225.jpg","level":"info","message":"Update Room type request received:","name":"Phòng khách","service":"user-service","timestamp":"2024-06-28 17:12:21"}
+{"0":"1","level":"info","message":"Room type updated with ID:","service":"user-service","timestamp":"2024-06-28 17:12:21"}
+{"id":"2","imageUrl":"1719569547515.jpg","level":"info","message":"Update Room type request received:","name":"Phòng ăn","service":"user-service","timestamp":"2024-06-28 17:12:27"}
+{"0":"2","level":"info","message":"Room type updated with ID:","service":"user-service","timestamp":"2024-06-28 17:12:27"}
+{"id":"3","level":"info","message":"Delete Room type request received:","service":"user-service","timestamp":"2024-06-28 17:12:30"}
+{"0":"3","level":"info","message":"Room type deleted with ID:","service":"user-service","timestamp":"2024-06-28 17:12:30"}
+{"id":"4","level":"info","message":"Delete Room type request received:","service":"user-service","timestamp":"2024-06-28 17:12:32"}
+{"0":"4","level":"info","message":"Room type deleted with ID:","service":"user-service","timestamp":"2024-06-28 17:12:32"}
+{"id":"1","imageUrl":"1719038524964.jpg","level":"info","message":"Update Brand request received:","name":"Icasa","service":"user-service","timestamp":"2024-06-28 17:12:44"}
+{"0":"1","level":"info","message":"Brand updated with ID:","service":"user-service","timestamp":"2024-06-28 17:12:44"}
+{"id":"1","imageUrl":"1719569569524.jpg","level":"info","message":"Update Brand request received:","name":"Icasa","service":"user-service","timestamp":"2024-06-28 17:12:49"}
+{"0":"1","level":"info","message":"Brand updated with ID:","service":"user-service","timestamp":"2024-06-28 17:12:49"}
+{"id":"2","imageUrl":"1719569573873.jpg","level":"info","message":"Update Brand request received:","name":"Ecoplast","service":"user-service","timestamp":"2024-06-28 17:12:53"}
+{"0":"2","level":"info","message":"Brand updated with ID:","service":"user-service","timestamp":"2024-06-28 17:12:53"}
+{"id":"3","imageUrl":"1719569578009.jpg","level":"info","message":"Update Brand request received:","name":"Casary","service":"user-service","timestamp":"2024-06-28 17:12:58"}
+{"0":"3","level":"info","message":"Brand updated with ID:","service":"user-service","timestamp":"2024-06-28 17:12:58"}
+{"id":"10","level":"info","message":"Delete design style request received:","service":"user-service","timestamp":"2024-06-28 17:13:03"}
+{"0":"1","1":"0","level":"info","message":"Design style deleted with ID:","service":"user-service","timestamp":"2024-06-28 17:13:03"}
+{"id":"8","level":"info","message":"Delete design style request received:","service":"user-service","timestamp":"2024-06-28 17:13:05"}
+{"0":"8","level":"info","message":"Design style deleted with ID:","service":"user-service","timestamp":"2024-06-28 17:13:05"}
+{"id":"7","level":"info","message":"Delete design style request received:","service":"user-service","timestamp":"2024-06-28 17:13:07"}
+{"0":"7","level":"info","message":"Design style deleted with ID:","service":"user-service","timestamp":"2024-06-28 17:13:07"}
+{"level":"info","message":"Login request received:","password":"password","service":"user-service","timestamp":"2024-06-28 17:14:07","username":"yukii"}
+{"level":"info","message":"Login successful, token generated","service":"user-service","timestamp":"2024-06-28 17:14:07"}
+{"level":"info","message":"Login request received:","password":"password","service":"user-service","timestamp":"2024-07-02 11:02:07","username":"hoainam"}
+{"level":"info","message":"Login successful, token generated","service":"user-service","timestamp":"2024-07-02 11:02:07"}
+{"level":"info","message":"Login request received:","password":"password","service":"user-service","timestamp":"2024-07-02 11:03:49","username":"hoainam"}
+{"level":"info","message":"Login successful, token generated","service":"user-service","timestamp":"2024-07-02 11:03:50"}
+{"level":"info","message":"Login request received:","password":"password","service":"user-service","timestamp":"2024-07-02 11:05:18","username":"yukii"}
+{"level":"info","message":"Login successful, token generated","service":"user-service","timestamp":"2024-07-02 11:05:18"}
+{"level":"info","message":"Login request received:","password":"password","service":"user-service","timestamp":"2024-07-02 14:26:34","username":"hoainam"}
+{"level":"info","message":"Login successful, token generated","service":"user-service","timestamp":"2024-07-02 14:26:34"}
+{"level":"info","message":"Login request received:","password":"password","service":"user-service","timestamp":"2024-07-02 14:35:22","username":"yukii"}
+{"level":"info","message":"Login successful, token generated","service":"user-service","timestamp":"2024-07-02 14:35:22"}
+{"level":"info","message":"Login request received:","password":"password","service":"user-service","timestamp":"2024-07-02 14:45:53","username":"hoainam"}
+{"level":"info","message":"Login successful, token generated","service":"user-service","timestamp":"2024-07-02 14:45:53"}
+{"level":"info","message":"Login request received:","password":"password","service":"user-service","timestamp":"2024-07-02 14:53:38","username":"hoainam"}
+{"level":"info","message":"Login successful, token generated","service":"user-service","timestamp":"2024-07-02 14:53:38"}
+{"level":"info","message":"Login request received:","password":"password","service":"user-service","timestamp":"2024-07-02 14:57:28","username":"hoainam"}
+{"level":"info","message":"Login successful, token generated","service":"user-service","timestamp":"2024-07-02 14:57:28"}
+{"level":"info","message":"Login request received:","password":"password","service":"user-service","timestamp":"2024-07-02 15:02:19","username":"yukii"}
+{"level":"info","message":"Login successful, token generated","service":"user-service","timestamp":"2024-07-02 15:02:19"}
+{"level":"info","message":"Login request received:","password":"password","service":"user-service","timestamp":"2024-07-02 15:45:49","username":"hoainam"}
+{"level":"info","message":"Login successful, token generated","service":"user-service","timestamp":"2024-07-02 15:45:49"}
+{"level":"info","message":"Login request received:","password":"password","service":"user-service","timestamp":"2024-07-02 15:52:46","username":"yukii"}
+{"level":"info","message":"Login successful, token generated","service":"user-service","timestamp":"2024-07-02 15:52:46"}
+{"level":"info","message":"Login request received:","password":"password","service":"user-service","timestamp":"2024-07-08 09:43:55","username":"hoainam"}
+{"level":"info","message":"Login successful, token generated","service":"user-service","timestamp":"2024-07-08 09:43:55"}
+{"level":"info","message":"Login request received:","password":"password","service":"user-service","timestamp":"2024-07-08 10:07:51","username":"hoainam"}
+{"level":"info","message":"Login successful, token generated","service":"user-service","timestamp":"2024-07-08 10:07:51"}
+{"level":"info","message":"Login request received:","password":"password","service":"user-service","timestamp":"2024-07-08 10:30:12","username":"hoainam"}
+{"level":"info","message":"Login successful, token generated","service":"user-service","timestamp":"2024-07-08 10:30:12"}
+{"level":"info","message":"Login request received:","password":"password","service":"user-service","timestamp":"2024-07-08 10:37:41","username":"hoainam"}
+{"level":"info","message":"Login successful, token generated","service":"user-service","timestamp":"2024-07-08 10:37:41"}
+{"level":"info","message":"Login request received:","password":"password","service":"user-service","timestamp":"2024-07-08 10:39:20","username":"hoainam"}
+{"level":"info","message":"Login successful, token generated","service":"user-service","timestamp":"2024-07-08 10:39:20"}
+{"level":"info","message":"Login request received:","password":"password","service":"user-service","timestamp":"2024-07-08 10:59:23","username":"hoainam"}
+{"level":"info","message":"Login successful, token generated","service":"user-service","timestamp":"2024-07-08 10:59:23"}
+{"level":"info","message":"Login request received:","password":"passwor","service":"user-service","timestamp":"2024-07-08 10:59:48","username":"hoainam"}
+{"level":"warn","message":"Invalid credentials - password mismatch","service":"user-service","timestamp":"2024-07-08 10:59:48"}
+{"level":"info","message":"Login request received:","password":"password","service":"user-service","timestamp":"2024-07-08 10:59:51","username":"hoainam"}
+{"level":"info","message":"Login successful, token generated","service":"user-service","timestamp":"2024-07-08 10:59:51"}
+{"level":"info","message":"Login request received:","password":"password","service":"user-service","timestamp":"2024-07-08 11:02:38","username":"hoainam"}
+{"level":"info","message":"Login successful, token generated","service":"user-service","timestamp":"2024-07-08 11:02:38"}
+{"level":"info","message":"Login request received:","password":"password","service":"user-service","timestamp":"2024-07-08 11:02:55","username":"hoainam"}
+{"level":"info","message":"Login successful, token generated","service":"user-service","timestamp":"2024-07-08 11:02:55"}
+{"level":"info","message":"Login request received:","password":"password","service":"user-service","timestamp":"2024-07-08 11:03:20","username":"hoainam"}
+{"level":"info","message":"Login successful, token generated","service":"user-service","timestamp":"2024-07-08 11:03:20"}
+{"level":"info","message":"Login request received:","password":"password","service":"user-service","timestamp":"2024-07-08 11:03:45","username":"hoainam"}
+{"level":"info","message":"Login successful, token generated","service":"user-service","timestamp":"2024-07-08 11:03:45"}
+{"level":"info","message":"Login request received:","password":"password","service":"user-service","timestamp":"2024-07-08 11:05:25","username":"hoainam"}
+{"level":"info","message":"Login successful, token generated","service":"user-service","timestamp":"2024-07-08 11:05:25"}
+{"level":"info","message":"Login request received:","password":"password","service":"user-service","timestamp":"2024-07-08 11:07:34","username":"hoainam"}
+{"level":"info","message":"Login successful, token generated","service":"user-service","timestamp":"2024-07-08 11:07:34"}
+{"level":"info","message":"Login request received:","password":"password","service":"user-service","timestamp":"2024-07-08 11:07:46","username":"hoainam"}
+{"level":"info","message":"Login successful, token generated","service":"user-service","timestamp":"2024-07-08 11:07:46"}
+{"level":"info","message":"Login request received:","password":"password","service":"user-service","timestamp":"2024-07-08 11:08:58","username":"hoainam"}
+{"level":"info","message":"Login successful, token generated","service":"user-service","timestamp":"2024-07-08 11:08:58"}
+{"level":"info","message":"Login request received:","password":"password","service":"user-service","timestamp":"2024-07-08 11:09:50","username":"hoainam"}
+{"level":"info","message":"Login successful, token generated","service":"user-service","timestamp":"2024-07-08 11:09:50"}
+{"level":"info","message":"Login request received:","password":"password","service":"user-service","timestamp":"2024-07-08 11:12:41","username":"hoainam"}
+{"level":"info","message":"Login successful, token generated","service":"user-service","timestamp":"2024-07-08 11:12:41"}
+{"level":"info","message":"Login request received:","password":"password","service":"user-service","timestamp":"2024-07-08 11:13:11","username":"hoainam"}
+{"level":"info","message":"Login successful, token generated","service":"user-service","timestamp":"2024-07-08 11:13:11"}
+{"level":"info","message":"Login request received:","password":"password","service":"user-service","timestamp":"2024-07-08 11:53:24","username":"hoainam"}
+{"level":"info","message":"Login successful, token generated","service":"user-service","timestamp":"2024-07-08 11:53:24"}

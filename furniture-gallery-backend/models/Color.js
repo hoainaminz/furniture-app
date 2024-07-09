@@ -82,7 +82,7 @@ const Color = {
                 `SELECT i.* 
        FROM items i
        JOIN item_colors ic ON i.id = ic.itemId
-       WHERE ic.colorId = ?
+       WHERE ic.colorId = ? AND i.pending = 0
        LIMIT ? OFFSET ?`,
                 [colorId, limit, offset]
             );
