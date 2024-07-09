@@ -16,7 +16,8 @@ const Login = () => {
             localStorage.setItem('username', response.data.username);
             localStorage.setItem('roleId', response.data.roleId);
             localStorage.setItem('fullName', response.data.fullName);
-            localStorage.setItem('avatar',response.data.avatar);
+            localStorage.setItem('avatar', response.data.avatar);
+            localStorage.setItem('userId', response.data.userId); // Store userId
             navigate('/');
             window.location.reload();
         } catch (err) {

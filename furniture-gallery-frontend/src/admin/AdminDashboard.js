@@ -8,6 +8,10 @@ const AdminDashboard = () => {
         localStorage.removeItem('token');
         localStorage.removeItem('username');
         localStorage.removeItem('roleId');
+        localStorage.removeItem('fullName');
+        localStorage.removeItem('avatar');
+        localStorage.removeItem('userId');
+        localStorage.removeItem('_grecaptcha');
         window.location.reload();
         navigate('/login');
     };
@@ -22,7 +26,7 @@ const AdminDashboard = () => {
                 </button>
                 <button onClick={() => navigate('/admin/categories')}
                         className="w-full bg-blue-500 text-white p-2 rounded hover:bg-blue-600 transition duration-200">
-                    Qua lý danh mục
+                    Quản lý danh mục
                 </button>
                 <button onClick={() => navigate('/admin/designstyles')}
                         className="w-full bg-blue-500 text-white p-2 rounded hover:bg-blue-600 transition duration-200">

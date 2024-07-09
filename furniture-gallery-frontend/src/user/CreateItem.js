@@ -96,10 +96,10 @@ const CreateItem = () => {
                     <div className="bg-white p-4 rounded shadow-md text-center">
                         <p className="text-green-500 mb-4">Tạo sản phẩm thành công</p>
                         <button
-                            onClick={() => navigate('/admin/items')}
+                            onClick={() => navigate('/my-items')}
                             className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
                         >
-                            Quay lại trang quản lý sản phẩm
+                            Quay lại trang sản phẩm của tôi
                         </button>
                     </div>
                 </div>

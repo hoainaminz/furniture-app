@@ -1,5 +1,6 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
+import {all} from "axios";
 
 const Offcanvas = ({ isOpen, onClose, user }) => {
     const navigate = useNavigate();
@@ -10,6 +11,12 @@ const Offcanvas = ({ isOpen, onClose, user }) => {
         localStorage.removeItem('roleId');
         localStorage.removeItem('fullName');
         localStorage.removeItem('avatar');
+        localStorage.removeItem('userId');
+        localStorage.removeItem('_grecaptcha');
+        localStorage.removeItem('userInfo');
+        sessionStorage.removeItem('userInfo');
+        sessionStorage.removeItem('token');
+        sessionStorage.removeItem('refreshToken');
         navigate('/');
         onClose();
         window.location.reload(); // Làm mới trang sau khi đăng xuất
@@ -79,6 +86,19 @@ const Offcanvas = ({ isOpen, onClose, user }) => {
                                             className="block w-full text-left border-2 border-blue-950 rounded-xl py-2 px-4"
                                         >
                                             Admin Dashboard
+                                        </button>
+                                    </li>
+                                )}
+                                {user.roleId === '2' && (
+                                    <li>
+                                        <button
+                                            onClick={() => {
+                                                navigate('/my-items');
+                                                onClose();
+                                            }}
+                                            className="block w-full text-left border-2 border-blue-950 rounded-xl py-2 px-4"
+                                        >
+                                            My Item Manager
                                         </button>
                                     </li>
                                 )}

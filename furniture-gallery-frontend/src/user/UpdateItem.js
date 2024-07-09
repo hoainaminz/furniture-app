@@ -1,11 +1,13 @@
+// user/UpdateItem.js
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import ImageUpload from '../components/ImageUpload';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import Select from 'react-select';
-import { jwtDecode } from "jwt-decode";
+import {jwtDecode} from 'jwt-decode'; // Chỉnh sửa import này
 
-const CreateItem = () => {
+const UpdateItem = () => {
+    const { id } = useParams();
     const [name, setName] = useState('');
     const [category, setCategory] = useState(null);
     const [description, setDescription] = useState('');
@@ -27,29 +29,87 @@ const CreateItem = () => {
         const fetchData = async () => {
             try {
                 const token = localStorage.getItem('token');
-                const [categoryRes, colorRes, brandRes, roomTypeRes, designStyleRes] = await Promise.all([
+
+                const [
+                    itemRes,
+                    categoryRes,
+                    colorRes,
+                    brandRes,
+                    roomTypeRes,
+                    designStyleRes,
+                    itemColorsRes,
+                    itemBrandRes,
+                    itemRoomTypeRes,
+                    itemDesignStyleRes,
+                    itemImagesRes
+                ] = await Promise.all([
+                    axios.get(`http://localhost:5001/api/items/${id}`, { headers: { 'Authorization': `Bearer ${token}` } }),
                     axios.get('http://localhost:5001/api/categories', { headers: { 'Authorization': `Bearer ${token}` } }),
                     axios.get('http://localhost:5001/api/colors', { headers: { 'Authorization': `Bearer ${token}` } }),
                     axios.get('http://localhost:5001/api/brands', { headers: { 'Authorization': `Bearer ${token}` } }),
                     axios.get('http://localhost:5001/api/roomTypes', { headers: { 'Authorization': `Bearer ${token}` } }),
                     axios.get('http://localhost:5001/api/designStyles', { headers: { 'Authorization': `Bearer ${token}` } }),
+                    axios.get(`http://localhost:5001/api/items/${id}/colors`, { headers: { 'Authorization': `Bearer ${token}` } }),
+                    axios.get(`http://localhost:5001/api/items/${id}/brand`, { headers: { 'Authorization': `Bearer ${token}` } }),
+                    axios.get(`http://localhost:5001/api/items/${id}/roomType`, { headers: { 'Authorization': `Bearer ${token}` } }),
+                    axios.get(`http://localhost:5001/api/items/${id}/designStyle`, { headers: { 'Authorization': `Bearer ${token}` } }),
+                    axios.get(`http://localhost:5001/api/items/${id}/images`, { headers: { 'Authorization': `Bearer ${token}` } }),
                 ]);
+
+                const item = itemRes.data;
+                setName(item.name);
+                setDescription(item.description);
 
                 setCategories(categoryRes.data.map(cat => ({ value: cat.id, label: cat.name })));
                 setColors(colorRes.data.map(color => ({ value: color.id, label: color.name })));
                 setBrands(brandRes.data.map(brand => ({ value: brand.id, label: brand.name })));
                 setRoomTypes(roomTypeRes.data.map(roomType => ({ value: roomType.id, label: roomType.name })));
                 setDesignStyles(designStyleRes.data.map(designStyle => ({ value: designStyle.id, label: designStyle.name })));
+
+                setCategory(categoryRes.data.find(cat => cat.id === item.categoryId)
+                    ? { value: item.categoryId, label: categoryRes.data.find(cat => cat.id === item.categoryId).name }
+                    : null
+                );
+
+                setSelectedColors(colorRes.data
+                    .filter(color => itemColorsRes.data.some(itemColor => itemColor.colorId === color.id))
+                    .map(color => ({ value: color.id, label: color.name }))
+                );
+
+                const fetchedBrand = itemBrandRes.data[0];
+                if (fetchedBrand) {
+                    setBrand({ value: fetchedBrand.id, label: fetchedBrand.name });
+                }
+
+                const fetchedRoomType = itemRoomTypeRes.data[0];
+                if (fetchedRoomType) {
+                    setRoomType({ value: fetchedRoomType.id, label: fetchedRoomType.name });
+                }
+
+                const fetchedDesignStyle = itemDesignStyleRes.data[0];
+                if (fetchedDesignStyle) {
+                    setDesignStyle({ value: fetchedDesignStyle.id, label: fetchedDesignStyle.name });
+                }
+
+                setImages(itemImagesRes.data.map(image => ({
+                    preview: `http://localhost:5001/uploads/${image.imageUrl}`,
+                    name: image.imageUrl.split('/').pop(),
+                    file: null,
+                })));
             } catch (error) {
                 console.error('Lỗi khi lấy dữ liệu:', error);
             }
         };
 
         fetchData();
-    }, []);
+    }, [id]);
 
     const handleImageUpload = (files) => {
-        setImages(files);
+        setImages(files.map(file => ({
+            preview: URL.createObjectURL(file),
+            name: file.name,
+            file
+        })));
     };
 
     const handleSubmit = async (e) => {
@@ -57,7 +117,7 @@ const CreateItem = () => {
 
         const formData = new FormData();
         formData.append('name', name);
-        formData.append('category', category ? category.value : '');
+        formData.append('categoryId', category ? category.value : '');
         formData.append('description', description);
         formData.append('brand', brand ? brand.value : '');
         formData.append('roomType', roomType ? roomType.value : '');
@@ -66,15 +126,19 @@ const CreateItem = () => {
             formData.append('colors[]', color.value);
         });
         images.forEach((image) => {
-            formData.append('images', image);
+            if (image.file) {
+                formData.append('images', image.file);
+            }
         });
 
         try {
             const token = localStorage.getItem('token');
-            const decoded = jwtDecode(token);
-            const pending = decoded.isAdmin ? 0 : 1;
-            formData.append('pending', pending);
-            await axios.post('http://localhost:5001/api/items', formData, {
+            const decodedToken = jwtDecode(token);
+            const isAdmin = decodedToken.isAdmin;
+
+            formData.append('pending', isAdmin ? 0 : 1);
+
+            await axios.put(`http://localhost:5001/api/items/${id}`, formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data',
                     'Authorization': `Bearer ${token}`
@@ -83,23 +147,23 @@ const CreateItem = () => {
             setSuccess(true);
         } catch (error) {
             console.error(error);
-            setError('Failed to create item');
+            setError('Failed to update item');
         }
     };
 
     return (
         <div className="container mx-auto p-4 relative">
-            <h1 className="text-2xl font-bold mb-4">Tạo sản phẩm mới</h1>
+            <h1 className="text-2xl font-bold mb-4">Cập nhật sản phẩm</h1>
             {error && <p className="text-red-500 mb-4">{error}</p>}
             {success && (
                 <div className="fixed inset-0 bg-gray-600 bg-opacity-50 flex items-center justify-center z-50">
                     <div className="bg-white p-4 rounded shadow-md text-center">
-                        <p className="text-green-500 mb-4">Tạo sản phẩm thành công</p>
+                        <p className="text-green-500 mb-4">Cập nhật sản phẩm thành công</p>
                         <button
-                            onClick={() => navigate('/admin/items')}
+                            onClick={() => navigate('/my-items')}
                             className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
                         >
-                            Quay lại trang quản lý sản phẩm
+                            Quay lại trang sản phẩm của tôi
                         </button>
                     </div>
                 </div>
@@ -181,17 +245,20 @@ const CreateItem = () => {
                     ></textarea>
                 </div>
                 <div className="mb-4">
-                    <ImageUpload onImageUpload={handleImageUpload} />
+                    <ImageUpload
+                        onImageUpload={handleImageUpload}
+                        existingImages={images} // Truyền images vào ImageUpload
+                    />
                 </div>
                 <button
                     type="submit"
                     className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
                 >
-                    Thêm sản phẩm
+                    Cập nhật sản phẩm
                 </button>
             </form>
         </div>
     );
 };
 
-export default CreateItem;
+export default UpdateItem;
