@@ -39,6 +39,7 @@ import ScrollToTop from "./components/ScrollToTop";
 import MyItemManager from './user/MyItemManager';  // Import My Item Manager
 import CreateUserItem from './user/CreateItem';
 import UpdateUserItem from './user/UpdateItem';
+import PendingManager from "./admin/PendingManager";
 
 function App() {
     return (
@@ -57,10 +58,10 @@ const HeaderWrapper = () => {
     const [user, setUser] = React.useState(null);
 
     React.useEffect(() => {
-        const token = localStorage.getItem('token');
+        const token = sessionStorage.getItem('token');
         if (token) {
             const decoded = jwtDecode(token);
-            const roleIdFromStorage = localStorage.getItem('roleId');
+            const roleIdFromStorage = sessionStorage.getItem('roleId');
             setUser({
                 username: decoded.username,
                 roleId: roleIdFromStorage,
@@ -113,6 +114,7 @@ const AnimatedRoutes = () => {
                 <Route path="/admin/designstyles" element={<ProtectedRoute allowedRoles={['1']}><ManageDesignStyle /></ProtectedRoute>} />
                 <Route path="/admin/roomtypes" element={<ProtectedRoute allowedRoles={['1']}><ManageRoomType /></ProtectedRoute>} />
                 <Route path="/admin/brands" element={<ProtectedRoute allowedRoles={['1']}><ManageBrand /></ProtectedRoute>} />
+                <Route path="/admin/pending-items" element={<ProtectedRoute allowedRoles={['1']}><PendingManager /></ProtectedRoute>} />
                 {/*<Route path="/my-items" element={<UserProtectedRoute allowedRoles={['2']}><MyItemManager /></UserProtectedRoute>} />*/}
                 <Route path="/my-items" element={<UserProtectedRoute><MyItemManager /></UserProtectedRoute>} />
                 {/*<Route path="/user/create-item" element={<UserProtectedRoute allowedRoles={['2']}><CreateItem /></UserProtectedRoute>} />*/}

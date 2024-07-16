@@ -12,12 +12,13 @@ const Login = () => {
         e.preventDefault();
         try {
             const response = await axios.post('http://localhost:5001/api/auth/login', { username, password });
-            localStorage.setItem('token', response.data.token);
-            localStorage.setItem('username', response.data.username);
-            localStorage.setItem('roleId', response.data.roleId);
-            localStorage.setItem('fullName', response.data.fullName);
-            localStorage.setItem('avatar', response.data.avatar);
-            localStorage.setItem('userId', response.data.userId); // Store userId
+            sessionStorage.setItem('token', response.data.token);
+            sessionStorage.setItem('liveToken', response.data.liveToken);
+            sessionStorage.setItem('username', response.data.username);
+            sessionStorage.setItem('roleId', response.data.roleId);
+            sessionStorage.setItem('fullName', response.data.fullName);
+            sessionStorage.setItem('avatar', response.data.avatar);
+            sessionStorage.setItem('userId', response.data.userId); // Store userId
             navigate('/');
             window.location.reload();
         } catch (err) {

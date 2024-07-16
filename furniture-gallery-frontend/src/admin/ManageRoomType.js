@@ -17,7 +17,7 @@ const ManageRoomType = () => {
         try {
             const response = await axios.get('http://localhost:5001/api/roomtypes', {
                 headers: {
-                    Authorization: `Bearer ${localStorage.getItem('token')}`
+                    Authorization: `Bearer ${sessionStorage.getItem('token')}`
                 }
             });
             setRoomTypes(response.data);
@@ -40,14 +40,14 @@ const ManageRoomType = () => {
             if (editId) {
                 await axios.put(`http://localhost:5001/api/roomtypes/${editId}`, formData, {
                     headers: {
-                        Authorization: `Bearer ${localStorage.getItem('token')}`,
+                        Authorization: `Bearer ${sessionStorage.getItem('token')}`,
                         'Content-Type': 'multipart/form-data'
                     }
                 });
             } else {
                 await axios.post('http://localhost:5001/api/roomtypes', formData, {
                     headers: {
-                        Authorization: `Bearer ${localStorage.getItem('token')}`,
+                        Authorization: `Bearer ${sessionStorage.getItem('token')}`,
                         'Content-Type': 'multipart/form-data'
                     }
                 });
@@ -73,7 +73,7 @@ const ManageRoomType = () => {
             try {
                 await axios.delete(`http://localhost:5001/api/roomtypes/${id}`, {
                     headers: {
-                        Authorization: `Bearer ${localStorage.getItem('token')}`
+                        Authorization: `Bearer ${sessionStorage.getItem('token')}`
                     }
                 });
                 fetchRoomTypes();

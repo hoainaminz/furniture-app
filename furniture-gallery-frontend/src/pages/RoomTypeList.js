@@ -10,8 +10,8 @@ const RoomTypeList = () => {
     const [user, setUser] = useState(null);
 
     useEffect(() => {
-        const userFromStorage = localStorage.getItem('username');
-        const roleIdFromStorage = localStorage.getItem('roleId');
+        const userFromStorage = sessionStorage.getItem('username');
+        const roleIdFromStorage = sessionStorage.getItem('roleId');
         if (userFromStorage) {
             setUser({ username: userFromStorage, roleId: roleIdFromStorage });
         }
@@ -20,7 +20,7 @@ const RoomTypeList = () => {
     useEffect(() => {
         const fetchRoomTypes = async () => {
             try {
-                const token = localStorage.getItem('token');
+                const token = sessionStorage.getItem('token');
                 const response = await axios.get('http://localhost:5001/api/roomTypes', {
                     headers: {
                         'Authorization': `Bearer ${token}`

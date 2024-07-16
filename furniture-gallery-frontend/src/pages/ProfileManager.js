@@ -25,7 +25,7 @@ const ProfileManager = () => {
     useEffect(() => {
         const fetchProfile = async () => {
             try {
-                const token = localStorage.getItem('token');
+                const token = sessionStorage.getItem('token');
                 const response = await axios.get('http://localhost:5001/api/profile/me', {
                     headers: { Authorization: `Bearer ${token}` }
                 });
@@ -54,7 +54,7 @@ const ProfileManager = () => {
     const handleProfileSubmit = async (e) => {
         e.preventDefault();
         try {
-            const token = localStorage.getItem('token');
+            const token = sessionStorage.getItem('token');
             const formData = new FormData();
             formData.append('fullName', newProfile.fullName);
             formData.append('phone', newProfile.phone);
@@ -85,7 +85,7 @@ const ProfileManager = () => {
             return;
         }
         try {
-            const token = localStorage.getItem('token');
+            const token = sessionStorage.getItem('token');
             const response = await axios.put('http://localhost:5001/api/profile/change-password', {
                 oldPassword: passwords.oldPassword,
                 newPassword: passwords.newPassword

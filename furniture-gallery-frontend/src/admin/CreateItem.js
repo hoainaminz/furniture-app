@@ -26,7 +26,7 @@ const CreateItem = () => {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const token = localStorage.getItem('token');
+                const token = sessionStorage.getItem('token');
                 const [categoryRes, colorRes, brandRes, roomTypeRes, designStyleRes] = await Promise.all([
                     axios.get('http://localhost:5001/api/categories', { headers: { 'Authorization': `Bearer ${token}` } }),
                     axios.get('http://localhost:5001/api/colors', { headers: { 'Authorization': `Bearer ${token}` } }),
@@ -70,7 +70,7 @@ const CreateItem = () => {
         });
 
         try {
-            const token = localStorage.getItem('token');
+            const token = sessionStorage.getItem('token');
             const decoded = jwtDecode(token);
             const pending = decoded.isAdmin ? 0 : 1;
             formData.append('pending', pending);

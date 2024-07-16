@@ -9,10 +9,10 @@ const Home = () => {
     const [user, setUser] = useState(null);
 
     useEffect(() => {
-        const userFromStorage = localStorage.getItem('username');
-        const roleIdFromStorage = localStorage.getItem('roleId');
-        const fullNameFromStorage = localStorage.getItem('fullName');
-        const avatarFromStorage = localStorage.getItem('avatar');
+        const userFromStorage = sessionStorage.getItem('username');
+        const roleIdFromStorage = sessionStorage.getItem('roleId');
+        const fullNameFromStorage = sessionStorage.getItem('fullName');
+        const avatarFromStorage = sessionStorage.getItem('avatar');
         if (userFromStorage) {
             setUser({ username: userFromStorage, roleId: roleIdFromStorage, fullName:fullNameFromStorage, avatar:avatarFromStorage });
         }

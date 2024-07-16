@@ -12,7 +12,7 @@ const ManageColors = () => {
     useEffect(() => {
         const fetchColors = async () => {
             try {
-                const token = localStorage.getItem('token');
+                const token = sessionStorage.getItem('token');
                 const response = await axios.get('http://localhost:5001/api/colors', {
                     headers: {
                         'Authorization': `Bearer ${token}`
@@ -33,7 +33,7 @@ const ManageColors = () => {
         formData.append('image', image);
 
         try {
-            const token = localStorage.getItem('token');
+            const token = sessionStorage.getItem('token');
             await axios.post('http://localhost:5001/api/colors', formData, {
                 headers: {
                     'Authorization': `Bearer ${token}`,
@@ -54,7 +54,7 @@ const ManageColors = () => {
         if (image) formData.append('image', image);
 
         try {
-            const token = localStorage.getItem('token');
+            const token = sessionStorage.getItem('token');
             await axios.put(`http://localhost:5001/api/colors/${editingColorId}`, formData, {
                 headers: {
                     'Authorization': `Bearer ${token}`,
@@ -71,7 +71,7 @@ const ManageColors = () => {
     const handleDeleteColor = async (id) => {
         if (window.confirm('Bạn có chắc chắn muốn xoá màu này không?')) {
             try {
-                const token = localStorage.getItem('token');
+                const token = sessionStorage.getItem('token');
                 await axios.delete(`http://localhost:5001/api/colors/${id}`, {
                     headers: {
                         'Authorization': `Bearer ${token}`

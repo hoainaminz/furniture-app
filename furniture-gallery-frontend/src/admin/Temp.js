@@ -26,7 +26,7 @@ const UpdateItem = () => {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const token = localStorage.getItem('token');
+                const token = sessionStorage.getItem('token');
 
                 const [
                     itemRes,
@@ -136,7 +136,7 @@ const UpdateItem = () => {
         });
 
         try {
-            const token = localStorage.getItem('token');
+            const token = sessionStorage.getItem('token');
             await axios.put(`http://localhost:5001/api/items/${id}`, formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data',
@@ -302,7 +302,7 @@ const UpdateItem = () => {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const token = localStorage.getItem('token');
+                const token = sessionStorage.getItem('token');
 
                 const [
                     itemRes,
@@ -394,7 +394,7 @@ const UpdateItem = () => {
         });
 
         try {
-            const token = localStorage.getItem('token');
+            const token = sessionStorage.getItem('token');
             await axios.put(`http://localhost:5001/api/items/${id}`, formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data',

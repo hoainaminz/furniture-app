@@ -19,7 +19,7 @@ const Search = () => {
         const fetchItems = async () => {
             try {
                 setLoading(true);
-                const token = localStorage.getItem('token'); // Assuming you are storing the token in localStorage
+                const token = sessionStorage.getItem('token'); // Assuming you are storing the token in sessionStorage
                 const response = await axios.get(`http://localhost:5001/api/search?keyword=${query}&page=${page}&limit=10`, {
                     headers: {
                         Authorization: `Bearer ${token}`

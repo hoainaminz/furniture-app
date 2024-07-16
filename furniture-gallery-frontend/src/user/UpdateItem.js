@@ -28,7 +28,7 @@ const UpdateItem = () => {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const token = localStorage.getItem('token');
+                const token = sessionStorage.getItem('token');
 
                 const [
                     itemRes,
@@ -132,7 +132,7 @@ const UpdateItem = () => {
         });
 
         try {
-            const token = localStorage.getItem('token');
+            const token = sessionStorage.getItem('token');
             const decodedToken = jwtDecode(token);
             const isAdmin = decodedToken.isAdmin;
 

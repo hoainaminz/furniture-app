@@ -17,7 +17,7 @@ const ManageBrand = () => {
         try {
             const response = await axios.get('http://localhost:5001/api/brands', {
                 headers: {
-                    Authorization: `Bearer ${localStorage.getItem('token')}`
+                    Authorization: `Bearer ${sessionStorage.getItem('token')}`
                 }
             });
             setBrands(response.data);
@@ -40,14 +40,14 @@ const ManageBrand = () => {
             if (editId) {
                 await axios.put(`http://localhost:5001/api/brands/${editId}`, formData, {
                     headers: {
-                        Authorization: `Bearer ${localStorage.getItem('token')}`,
+                        Authorization: `Bearer ${sessionStorage.getItem('token')}`,
                         'Content-Type': 'multipart/form-data'
                     }
                 });
             } else {
                 await axios.post('http://localhost:5001/api/brands', formData, {
                     headers: {
-                        Authorization: `Bearer ${localStorage.getItem('token')}`,
+                        Authorization: `Bearer ${sessionStorage.getItem('token')}`,
                         'Content-Type': 'multipart/form-data'
                     }
                 });
@@ -73,7 +73,7 @@ const ManageBrand = () => {
             try {
                 await axios.delete(`http://localhost:5001/api/brands/${id}`, {
                     headers: {
-                        Authorization: `Bearer ${localStorage.getItem('token')}`
+                        Authorization: `Bearer ${sessionStorage.getItem('token')}`
                     }
                 });
                 fetchBrands();

@@ -17,7 +17,7 @@ const ManageCategory = () => {
         try {
             const response = await axios.get('http://localhost:5001/api/categories', {
                 headers: {
-                    'Authorization': `Bearer ${localStorage.getItem('token')}`
+                    'Authorization': `Bearer ${sessionStorage.getItem('token')}`
                 }
             });
             setCategories(response.data);
@@ -37,13 +37,13 @@ const ManageCategory = () => {
             const response = editId
                 ? await axios.put(`http://localhost:5001/api/categories/${editId}`, formData, {
                     headers: {
-                        'Authorization': `Bearer ${localStorage.getItem('token')}`,
+                        'Authorization': `Bearer ${sessionStorage.getItem('token')}`,
                         'Content-Type': 'multipart/form-data'
                     }
                 })
                 : await axios.post('http://localhost:5001/api/categories', formData, {
                     headers: {
-                        'Authorization': `Bearer ${localStorage.getItem('token')}`,
+                        'Authorization': `Bearer ${sessionStorage.getItem('token')}`,
                         'Content-Type': 'multipart/form-data'
                     }
                 });
@@ -62,7 +62,7 @@ const ManageCategory = () => {
             try {
                 await axios.delete(`http://localhost:5001/api/categories/${id}`, {
                     headers: {
-                        'Authorization': `Bearer ${localStorage.getItem('token')}`
+                        'Authorization': `Bearer ${sessionStorage.getItem('token')}`
                     }
                 });
                 fetchCategories();
