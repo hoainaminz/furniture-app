@@ -28,8 +28,15 @@ const authorizeRoles = (allowedRoles) => {
         next();
     };
 };
-
+const isAdmin = (req, res, next) => {
+    if (req.user && req.user.isAdmin) {
+        next();
+    } else {
+        res.sendStatus(403);
+    }
+};
 module.exports = {
     authenticateJWT,
     authorizeRoles,
+    isAdmin,
 };

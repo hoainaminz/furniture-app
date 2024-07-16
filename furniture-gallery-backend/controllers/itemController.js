@@ -14,19 +14,6 @@ exports.getAllItems = async (req, res) => {
     }
 };
 
-// exports.getItemById = async (req, res) => {
-//     try {
-//         const itemId = req.params.id;
-//         const item = await Item.getById(itemId);
-//         if (!item) {
-//             return res.status(404).json({ message: 'Không tìm thấy sản phẩm' });
-//         }
-//         res.json(item);
-//     } catch (err) {
-//         console.error('Lỗi khi lấy thông tin sản phẩm:', err);
-//         res.status(500).json({ message: 'Lỗi server' });
-//     }
-// };
 exports.getItemById = async (req, res) => {
     const { id } = req.params;
 
@@ -34,7 +21,7 @@ exports.getItemById = async (req, res) => {
         const [item] = await req.pool.query('SELECT * FROM items WHERE id = ? AND pending = 0', [id]);
 
         if (item.length === 0) {
-            return res.status(404).json({ message: 'Item not found' });
+            return res.status(404).json({ message: 'Không tìm thấy SP' });
         }
 
         console.log('Fetched item:', item[0]); // Thêm log để kiểm tra dữ liệu
@@ -70,59 +57,6 @@ exports.getUserItems = async (req, res) => {
     }
 };
 
-// exports.createItem = async (req, res) => {
-//     const { name, category, description, brand, roomType, designStyle, colors, pending } = req.body;
-//     const images = req.files;
-//
-//     if (!name || !category || !description || !images) {
-//         return res.status(400).json({ error: 'All fields are required' });
-//     }
-//
-//     try {
-//         const [itemResult] = await pool.query(
-//             'INSERT INTO items (name, categoryId, description, pending) VALUES (?, ?, ?, ?)',
-//             [name, category, description, pending]
-//         );
-//
-//         const itemId = itemResult.insertId;
-//
-//         const imagePromises = images.map(image => {
-//             return pool.query(
-//                 'INSERT INTO item_images (itemId, imageUrl) VALUES (?, ?)',
-//                 [itemId, image.filename]
-//             );
-//         });
-//
-//         const colorPromises = colors.map(colorId => {
-//             return pool.query(
-//                 'INSERT INTO item_colors (itemId, colorId) VALUES (?, ?)',
-//                 [itemId, colorId]
-//             );
-//         });
-//
-//         const brandPromise = pool.query(
-//             'INSERT INTO item_brands (itemId, brandId) VALUES (?, ?)',
-//             [itemId, brand]
-//         );
-//
-//         const roomTypePromise = pool.query(
-//             'INSERT INTO item_room_types (itemId, roomTypeId) VALUES (?, ?)',
-//             [itemId, roomType]
-//         );
-//
-//         const designStylePromise = pool.query(
-//             'INSERT INTO item_design_styles (itemId, designStyleId) VALUES (?, ?)',
-//             [itemId, designStyle]
-//         );
-//
-//         await Promise.all([...imagePromises, ...colorPromises, brandPromise, roomTypePromise, designStylePromise]);
-//
-//         res.status(201).json({ message: 'Item created successfully' });
-//     } catch (error) {
-//         console.error(error);
-//         res.status(500).json({ error: 'Server error' });
-//     }
-// };
 exports.createItem = async (req, res) => {
     const { name, category, description, brand, roomType, designStyle, colors } = req.body;
     const images = req.files;
@@ -186,72 +120,6 @@ exports.createItem = async (req, res) => {
         res.status(500).json({ error: 'Server error' });
     }
 };
-// exports.updateItem = async (req, res) => {
-//     const { id } = req.params;
-//     const { name, categoryId, description, brand, roomType, designStyle, colors, pending } = req.body;
-//     const images = req.files;
-//
-//     if (!name || !categoryId || !description) {
-//         return res.status(400).json({ error: 'All fields are required' });
-//     }
-//
-//     try {
-//         // Cập nhật thông tin cơ bản của sản phẩm
-//         await pool.query(
-//             'UPDATE items SET name = ?, categoryId = ?, description = ?, pending = ? WHERE id = ?',
-//             [name, categoryId, description, pending, id]
-//         );
-//
-//         // Cập nhật màu sắc
-//         if (colors) {
-//             await pool.query('DELETE FROM item_colors WHERE itemId = ?', [id]);
-//             const colorPromises = colors.map(colorId => {
-//                 return pool.query('INSERT INTO item_colors (itemId, colorId) VALUES (?, ?)', [id, colorId]);
-//             });
-//             await Promise.all(colorPromises);
-//         }
-//
-//         // Cập nhật thương hiệu
-//         if (brand) {
-//             await pool.query('DELETE FROM item_brands WHERE itemId = ?', [id]);
-//             await pool.query('INSERT INTO item_brands (itemId, brandId) VALUES (?, ?)', [id, brand]);
-//         }
-//
-//         // Cập nhật loại phòng
-//         if (roomType) {
-//             await pool.query('DELETE FROM item_room_types WHERE itemId = ?', [id]);
-//             await pool.query('INSERT INTO item_room_types (itemId, roomTypeId) VALUES (?, ?)', [id, roomType]);
-//         }
-//
-//         // Cập nhật phong cách thiết kế
-//         if (designStyle) {
-//             await pool.query('DELETE FROM item_design_styles WHERE itemId = ?', [id]);
-//             await pool.query('INSERT INTO item_design_styles (itemId, designStyleId) VALUES (?, ?)', [id, designStyle]);
-//         }
-//
-//         // Cập nhật hình ảnh
-//         if (images.length > 0) {
-//             const [oldImages] = await pool.query('SELECT imageUrl FROM item_images WHERE itemId = ?', [id]);
-//             oldImages.forEach((image) => {
-//                 const imagePath = path.join(__dirname, '../uploads', image.imageUrl);
-//                 if (fs.existsSync(imagePath)) {
-//                     fs.unlinkSync(imagePath);
-//                 }
-//             });
-//             await pool.query('DELETE FROM item_images WHERE itemId = ?', [id]);
-//
-//             const imagePromises = images.map(image => {
-//                 return pool.query('INSERT INTO item_images (itemId, imageUrl) VALUES (?, ?)', [id, image.filename]);
-//             });
-//             await Promise.all(imagePromises);
-//         }
-//
-//         res.status(200).json({ message: 'Item updated successfully' });
-//     } catch (error) {
-//         console.error('Error updating item:', error);
-//         res.status(500).json({ error: 'Server error' });
-//     }
-// };
 exports.updateItem = async (req, res) => {
     const { id } = req.params;
     const { name, categoryId, description, brand, roomType, designStyle, colors } = req.body;
@@ -320,42 +188,7 @@ exports.updateItem = async (req, res) => {
         res.status(500).json({ error: 'Server error' });
     }
 };
-// exports.deleteItem = async (req, res) => {
-//     const itemId = req.params.id;
-//     const connection = await req.pool.getConnection();
-//
-//     try {
-//         await connection.beginTransaction();
-//
-//         // Xóa tất cả các hàng liên quan trong bảng item_brands
-//         await connection.query('DELETE FROM item_brands WHERE itemId = ?', [itemId]);
-//
-//         // Xóa tất cả các hàng liên quan trong bảng item_images (nếu có)
-//         await connection.query('DELETE FROM item_images WHERE itemId = ?', [itemId]);
-//
-//         // Xóa tất cả các hàng liên quan trong bảng item_colors (nếu có)
-//         await connection.query('DELETE FROM item_colors WHERE itemId = ?', [itemId]);
-//
-//         // Xóa tất cả các hàng liên quan trong bảng item_room_types (nếu có)
-//         await connection.query('DELETE FROM item_room_types WHERE itemId = ?', [itemId]);
-//
-//         // Xóa tất cả các hàng liên quan trong bảng item_design_styles (nếu có)
-//         await connection.query('DELETE FROM item_design_styles WHERE itemId = ?', [itemId]);
-//
-//         // Cuối cùng, xóa hàng trong bảng items
-//         await connection.query('DELETE FROM items WHERE id = ?', [itemId]);
-//
-//         await connection.commit();
-//
-//         res.status(200).json({ message: 'Item deleted successfully' });
-//     } catch (error) {
-//         await connection.rollback();
-//         console.error('Error deleting item:', error);
-//         res.status(500).json({ message: 'Error deleting item' });
-//     } finally {
-//         connection.release();
-//     }
-// };
+
 exports.deleteItem = async (req, res) => {
     const itemId = req.params.id;
     const connection = await req.pool.getConnection();
@@ -491,7 +324,7 @@ exports.getRelatedItems = async (req, res) => {
         const limit = 10;
 
         // Lấy categoryId của sản phẩm hiện tại
-        const [itemRows] = await pool.query('SELECT categoryId FROM items WHERE id = ?', [itemId]);
+        const [itemRows] = await pool.query('SELECT categoryId FROM items WHERE id = ? AND pending = 0', [itemId]);
         if (itemRows.length === 0) {
             return res.status(404).json({ message: 'Không tìm thấy sản phẩm' });
         }
@@ -508,7 +341,7 @@ exports.getRelatedItems = async (req, res) => {
         WHERE 
             (i.categoryId = ?  -- Sử dụng categoryId đã lấy ở trên
             OR ic.colorId IN (SELECT colorId FROM item_colors WHERE itemId = ?))
-            AND i.id != ?
+            AND i.id != ? AND pending = 0
         LIMIT ? OFFSET ?
     `, [categoryId, itemId, itemId, limit, offset]);
 
@@ -552,6 +385,31 @@ exports.getItemColors = async (req, res) => {
         res.json(rows);
     } catch (error) {
         console.error('Lỗi khi lấy màu của sản phẩm:', error);
+        res.status(500).json({ message: 'Lỗi server' });
+    }
+};
+exports.setPending = async (req, res) => {
+    const { id, pending } = req.body;
+
+    if (id === undefined || pending === undefined) {
+        return res.status(400).json({ error: 'Thiếu giá trị' });
+    }
+
+    try {
+        await req.pool.query('UPDATE items SET pending = ? WHERE id = ?', [pending, id]);
+        res.status(200).json({ message: 'Item pending status updated successfully' });
+    } catch (error) {
+        console.error('Error updating item pending status:', error);
+        res.status(500).json({ error: 'Server error' });
+    }
+};
+exports.getPendingItem = async (req, res) => {
+    try {
+        const userId = req.user ? req.user.id : null;
+        const items = await Item.getPending(userId);
+        res.json(items);
+    } catch (err) {
+        console.error('Lỗi khi lấy danh sách sản phẩm:', err);
         res.status(500).json({ message: 'Lỗi server' });
     }
 };

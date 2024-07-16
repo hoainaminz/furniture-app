@@ -108,10 +108,12 @@ exports.login = [
             const token = jwt.sign({ userId: user.id, isAdmin: user.roleId === 1, fullName: user.fullName, avatar:user.avatar, userId: user.id }, process.env.JWT_SECRET || 'your_jwt_secret', {
                 expiresIn: '7d',
             });
+            const liveToken = jwt.sign({ userId: user.id, isAdmin: user.roleId === 1, fullName: user.fullName, avatar:user.avatar, userId: user.id }, process.env.JWT_SECRET || 'your_jwt_secret');
 
             logger.info('Login successful, token generated');
             res.json({
                 token,
+                liveToken,
                 username: user.username,
                 fullName: user.fullName,
                 roleId: user.roleId,

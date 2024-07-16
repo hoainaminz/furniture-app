@@ -15,6 +15,20 @@ const Item = {
       throw err;
     }
   },
+  getPending: async (userId = null) => {
+    try {
+      let query = 'SELECT * FROM items WHERE pending = 1';
+      if (userId) {
+        query += ` AND (items.id IN (SELECT itemId FROM user_items WHERE userId = ?) OR items.id IN (SELECT itemId FROM user_items WHERE userId = ?))`;
+        const [rows] = await pool.execute(query, [userId, userId]);
+        return rows;
+      }
+      const [rows] = await pool.execute(query);
+      return rows;
+    } catch (err) {
+      throw err;
+    }
+  },
 
   getById: async (itemId) => {
     try {
