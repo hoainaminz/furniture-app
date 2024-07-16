@@ -3,8 +3,8 @@ import { Navigate } from 'react-router-dom';
 import { jwtDecode } from "jwt-decode";
 
 const ProtectedRoute = ({ children, allowedRoles }) => {
-    const token = localStorage.getItem('token');
-    const roleId = localStorage.getItem('roleId');
+    const token = sessionStorage.getItem('token');
+    const roleId = sessionStorage.getItem('roleId');
 
     if (!token) {
         return <Navigate to="/login" />;
@@ -13,7 +13,7 @@ const ProtectedRoute = ({ children, allowedRoles }) => {
     try {
         const decoded = jwtDecode(token);
 
-        // Check if the roleId in localStorage is 1 and decoded.isAdmin is true
+        // Check if the roleId in sessionStorage is 1 and decoded.isAdmin is true
         if (roleId === '1' && decoded.isAdmin) {
             return children;
         }

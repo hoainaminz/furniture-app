@@ -18,13 +18,13 @@ module.exports = (pool) => {
     router.get('/:itemId', itemImageController.getItemImagesByItemId);
     router.post('/', itemImageController.createItemImage);
     router.delete('/:id', itemImageController.deleteItemImage);
-    router.delete('/unused', async (req, res) => {
-        try {
-            await deleteUnusedImages();
-            res.status(200).json({ message: 'Đã xoá thành công các hình ảnh không sử dụng!' });
-        } catch (error) {
-            res.status(500).json({ message: 'Lỗi khi xoá hình ảnh không sử dụng.' });
-        }
-    });
+    // router.delete('/unused', async (req, res) => {
+    //     try {
+    //         await deleteUnusedImages();
+    //         res.status(200).json({ message: 'Đã xoá thành công các hình ảnh không sử dụng!' });
+    //     } catch (error) {
+    //         res.status(500).json({ message: 'Lỗi khi xoá hình ảnh không sử dụng.' });
+    //     }
+    // });
     return router;
 };

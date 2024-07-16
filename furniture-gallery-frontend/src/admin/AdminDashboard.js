@@ -5,13 +5,8 @@ const AdminDashboard = () => {
     const navigate = useNavigate();
 
     const handleLogout = () => {
-        localStorage.removeItem('token');
-        localStorage.removeItem('username');
-        localStorage.removeItem('roleId');
-        localStorage.removeItem('fullName');
-        localStorage.removeItem('avatar');
-        localStorage.removeItem('userId');
-        localStorage.removeItem('_grecaptcha');
+        localStorage.clear();
+        sessionStorage.clear();
         window.location.reload();
         navigate('/login');
     };
@@ -24,6 +19,10 @@ const AdminDashboard = () => {
                         className="w-full bg-blue-500 text-white p-2 rounded hover:bg-blue-600 transition duration-200">
                     Quản lý sản phẩm
                 </button>
+                <button onClick={() => navigate('/admin/pending-items')}
+                        className="w-full bg-blue-500 text-white p-2 rounded hover:bg-blue-600 transition duration-200">
+                    Xét duyệt sản phẩm
+                </button>
                 <button onClick={() => navigate('/admin/categories')}
                         className="w-full bg-blue-500 text-white p-2 rounded hover:bg-blue-600 transition duration-200">
                     Quản lý danh mục
@@ -34,7 +33,7 @@ const AdminDashboard = () => {
                 </button>
                 <button onClick={() => navigate('/admin/roomtypes')}
                         className="w-full bg-blue-500 text-white p-2 rounded hover:bg-blue-600 transition duration-200">
-                   Quản lý phòng
+                    Quản lý phòng
                 </button>
                 <button onClick={() => navigate('/admin/brands')}
                         className="w-full bg-blue-500 text-white p-2 rounded hover:bg-blue-600 transition duration-200">

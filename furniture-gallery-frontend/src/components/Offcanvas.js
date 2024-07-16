@@ -1,22 +1,12 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import {all} from "axios";
 
 const Offcanvas = ({ isOpen, onClose, user }) => {
     const navigate = useNavigate();
 
     const handleLogout = () => {
-        localStorage.removeItem('token');
-        localStorage.removeItem('username');
-        localStorage.removeItem('roleId');
-        localStorage.removeItem('fullName');
-        localStorage.removeItem('avatar');
-        localStorage.removeItem('userId');
-        localStorage.removeItem('_grecaptcha');
-        localStorage.removeItem('userInfo');
-        sessionStorage.removeItem('userInfo');
-        sessionStorage.removeItem('token');
-        sessionStorage.removeItem('refreshToken');
+        localStorage.clear();
+        sessionStorage.clear();
         navigate('/');
         onClose();
         window.location.reload(); // Làm mới trang sau khi đăng xuất

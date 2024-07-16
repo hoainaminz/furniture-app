@@ -22,8 +22,8 @@ const ItemDetail = () => {
     const [user, setUser] = useState(null);
 
     useEffect(() => {
-        const userFromStorage = localStorage.getItem('username');
-        const roleIdFromStorage = localStorage.getItem('roleId');
+        const userFromStorage = sessionStorage.getItem('username');
+        const roleIdFromStorage = sessionStorage.getItem('roleId');
         if (userFromStorage) {
             setUser({ username: userFromStorage, roleId: roleIdFromStorage });
         }
@@ -31,7 +31,7 @@ const ItemDetail = () => {
 
     const fetchItem = async () => {
         try {
-            const token = localStorage.getItem('token');
+            const token = sessionStorage.getItem('token');
             const config = {
                 headers: { Authorization: `Bearer ${token}` }
             };

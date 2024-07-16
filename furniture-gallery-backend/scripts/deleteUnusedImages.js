@@ -49,4 +49,5 @@ async function deleteUnusedImages() {
     }
 }
 
-deleteUnusedImages();
+// deleteUnusedImages();
+//Khi nào dùng thì bật nó lên :D

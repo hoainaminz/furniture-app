@@ -1,26 +1,23 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { Link, useNavigate } from 'react-router-dom';
-import { PencilSquareIcon, TrashIcon } from '@heroicons/react/24/outline';
+import { CheckIcon, TrashIcon } from '@heroicons/react/24/outline';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { Modal } from 'react-responsive-modal';
 import 'react-responsive-modal/styles.css';
 
-const ManageItems = () => {
+const PendingManager = () => {
     const [items, setItems] = useState([]);
-    const [search, setSearch] = useState('');
     const [page, setPage] = useState(1);
     const [modalIsOpen, setModalIsOpen] = useState(false);
     const [selectedItem, setSelectedItem] = useState(null);
     const itemsPerPage = 20;
-    const navigate = useNavigate();
 
     useEffect(() => {
-        const fetchItems = async () => {
+        const fetchPendingItems = async () => {
             try {
                 const token = sessionStorage.getItem('token');
-                const response = await axios.get('http://localhost:5001/api/items', {
+                const response = await axios.get('http://localhost:5001/api/items/pending', {
                     headers: {
                         'Authorization': `Bearer ${token}`
                     }
@@ -35,11 +32,28 @@ const ManageItems = () => {
                 }));
                 setItems(itemsWithImages);
             } catch (error) {
-                console.error('Lỗi khi lấy danh sách sản phẩm:', error);
+                console.error('Error fetching pending items:', error);
             }
         };
-        fetchItems();
+        fetchPendingItems();
     }, []);
+
+    const handleAccept = async (id) => {
+        try {
+            const token = sessionStorage.getItem('token');
+            await axios.patch('http://localhost:5001/api/items/set-pending', { id, pending: 0 }, {
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                }
+            });
+            setItems(items.filter(item => item.id !== id));
+            closeModal();
+            toast.success('Sản phẩm đã được duyệt!');
+        } catch (error) {
+            console.error('Error accepting item:', error);
+            toast.error('Không thể duyệt sản phẩm.');
+        }
+    };
 
     const handleDelete = async (id) => {
         if (window.confirm('Bạn có chắc chắn muốn xoá sản phẩm này không?')) {
@@ -52,9 +66,9 @@ const ManageItems = () => {
                 });
                 setItems(items.filter(item => item.id !== id));
                 closeModal();
-                toast.success('Sản phẩm đã được xoá thành công!');
+                toast.warning('Đã xoá sản phẩm!');
             } catch (error) {
-                console.error('Lỗi khi xoá sản phẩm:', error);
+                console.error('Error deleting item:', error);
                 toast.error('Không thể xoá sản phẩm.');
             }
         }
@@ -70,13 +84,9 @@ const ManageItems = () => {
         setSelectedItem(null);
     };
 
-    const filteredItems = items.filter(item =>
-        item.name.toLowerCase().includes(search.toLowerCase())
-    );
+    const paginatedItems = items.slice((page - 1) * itemsPerPage, page * itemsPerPage);
 
-    const paginatedItems = filteredItems.slice((page - 1) * itemsPerPage, page * itemsPerPage);
-
-    const totalPages = Math.ceil(filteredItems.length / itemsPerPage);
+    const totalPages = Math.ceil(items.length / itemsPerPage);
     const pagination = generatePagination(page, totalPages);
 
     return (
@@ -93,24 +103,7 @@ const ManageItems = () => {
                 pauseOnHover
                 style={{ width: "80%", left: "20%" }}
             />
-            <h1 className="text-2xl font-bold mb-4">Quản lý sản phẩm</h1>
-            <div className="mb-4">
-                <Link
-                    to="/admin/create-item"
-                    className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
-                >
-                    Thêm mới
-                </Link>
-            </div>
-            <div className="mb-4">
-                <input
-                    type="text"
-                    placeholder="Tìm kiếm sản phẩm"
-                    value={search}
-                    onChange={(e) => setSearch(e.target.value)}
-                    className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                />
-            </div>
+            <h1 className="text-2xl font-bold mb-4">Quản lý sản phẩm chờ duyệt</h1>
             <div className="overflow-x-auto">
                 <table className="min-w-full bg-white">
                     <thead>
@@ -123,24 +116,22 @@ const ManageItems = () => {
                     <tbody>
                     {paginatedItems.map(item => (
                         <tr key={item.id}>
-                            <td className="py-2 px-4 border-b font-bold text-blue-500 cursor-pointer"
-                                onClick={() => openModal(item)}>{item.name}</td>
-                            <td className="py-2 px-4 border-b whitespace-nowrap" onClick={() => openModal(item)}>
-                                <img src={`http://localhost:5001/uploads/${item.images[0]?.imageUrl}`} alt={item.name}
-                                     className="w-16 h-16 object-cover"/>
+                            <td className="py-2 px-4 border-b font-bold text-blue-500 cursor-pointer" onClick={() => openModal(item)}>{item.name}</td>
+                            <td className="py-2 px-4 border-b whitespace-nowrap"onClick={() => openModal(item)}>
+                                <img src={`http://localhost:5001/uploads/${item.images[0]?.imageUrl}`} alt={item.name} className="w-16 h-16 object-cover"/>
                             </td>
                             <td className="py-2 px-4 border-b whitespace-nowrap sticky right-0 bg-white text-center">
-                                <Link
-                                    to={`/admin/edit-item/${item.id}`}
-                                    className="text-blue-500 hover:text-blue-700"
+                                <button
+                                    onClick={() => handleAccept(item.id)}
+                                    className="text-green-500 hover:text-green-700 mr-2"
                                 >
-                                    <PencilSquareIcon className="h-5 w-5 inline-block"/>
-                                </Link>
+                                    <CheckIcon className="h-5 w-5 inline-block" />
+                                </button>
                                 <button
                                     onClick={() => handleDelete(item.id)}
-                                    className="ml-2 text-red-500 hover:text-red-700"
+                                    className="text-red-500 hover:text-red-700"
                                 >
-                                    <TrashIcon className="h-5 w-5 inline-block"/>
+                                    <TrashIcon className="h-5 w-5 inline-block" />
                                 </button>
                             </td>
                         </tr>
@@ -154,7 +145,8 @@ const ManageItems = () => {
                         key={index}
                         onClick={() => setPage(pageNumber === '...' ? page : pageNumber)}
                         className={`mx-1 px-3 py-1 rounded ${page === pageNumber ? 'bg-blue-500 text-white' : 'bg-gray-200 text-gray-700'}`}
-                        disabled={pageNumber === '...'}>
+                        disabled={pageNumber === '...'}
+                    >
                         {pageNumber}
                     </button>
                 ))}
@@ -176,17 +168,17 @@ const ManageItems = () => {
                             <div key={index} className="mb-2">
                                 <img src={`http://localhost:5001/uploads/${image.imageUrl}`} alt={`Item image ${index + 1}`} className="mb-2 w-full"/>
                                 <div className="flex justify-end">
-                                    <Link
-                                        to={`/admin/edit-item/${selectedItem.id}`}
-                                        className="text-blue-500 hover:text-blue-700 mr-2"
+                                    <button
+                                        onClick={() => handleAccept(selectedItem.id)}
+                                        className="text-green-500 hover:text-green-700 mr-2"
                                     >
-                                        <PencilSquareIcon className="h-5 w-5 inline-block"/>
-                                    </Link>
+                                        <CheckIcon className="h-5 w-5 inline-block" />
+                                    </button>
                                     <button
                                         onClick={() => handleDelete(selectedItem.id)}
                                         className="text-red-500 hover:text-red-700"
                                     >
-                                        <TrashIcon className="h-5 w-5 inline-block"/>
+                                        <TrashIcon className="h-5 w-5 inline-block" />
                                     </button>
                                 </div>
                             </div>
@@ -199,7 +191,7 @@ const ManageItems = () => {
 };
 
 const generatePagination = (currentPage, totalPages) => {
-    const delta = 1;
+    const delta = 2;
     const range = [];
     const rangeWithDots = [];
     let l;
@@ -225,4 +217,4 @@ const generatePagination = (currentPage, totalPages) => {
     return rangeWithDots;
 };
 
-export default ManageItems;
+export default PendingManager;

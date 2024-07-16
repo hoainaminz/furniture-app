@@ -17,7 +17,7 @@ const ManageDesignStyle = () => {
         try {
             const response = await axios.get('http://localhost:5001/api/designstyles', {
                 headers: {
-                    Authorization: `Bearer ${localStorage.getItem('token')}`
+                    Authorization: `Bearer ${sessionStorage.getItem('token')}`
                 }
             });
             setDesignStyles(response.data);
@@ -40,14 +40,14 @@ const ManageDesignStyle = () => {
             if (editId) {
                 await axios.put(`http://localhost:5001/api/designstyles/${editId}`, formData, {
                     headers: {
-                        Authorization: `Bearer ${localStorage.getItem('token')}`,
+                        Authorization: `Bearer ${sessionStorage.getItem('token')}`,
                         'Content-Type': 'multipart/form-data'
                     }
                 });
             } else {
                 await axios.post('http://localhost:5001/api/designstyles', formData, {
                     headers: {
-                        Authorization: `Bearer ${localStorage.getItem('token')}`,
+                        Authorization: `Bearer ${sessionStorage.getItem('token')}`,
                         'Content-Type': 'multipart/form-data'
                     }
                 });
@@ -73,7 +73,7 @@ const ManageDesignStyle = () => {
             try {
                 await axios.delete(`http://localhost:5001/api/designstyles/${id}`, {
                     headers: {
-                        Authorization: `Bearer ${localStorage.getItem('token')}`
+                        Authorization: `Bearer ${sessionStorage.getItem('token')}`
                     }
                 });
                 fetchDesignStyles();

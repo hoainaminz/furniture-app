@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const itemController = require('../controllers/itemController');
-const { authenticateJWT } = require('../middleware/authMiddleware');
+const { authenticateJWT, isAdmin } = require('../middleware/authMiddleware');
 const upload = require('../middleware/uploadMiddleware');
 
 module.exports = (pool) => {
@@ -16,6 +16,7 @@ module.exports = (pool) => {
 
     // Các route hiện có
     router.get('/', itemController.getAllItems);
+    router.get('/pending', itemController.getPendingItem);
     router.get('/:id', itemController.getItemById);
     router.post('/items', upload.array('images', 10), itemController.createItem);
     router.post('/', upload.array('images', 10), itemController.createItem);
@@ -29,6 +30,6 @@ module.exports = (pool) => {
     router.get('/:id/related', itemController.getRelatedItems);
     router.get('/:id/colors', itemController.getItemColors);
     router.get('/user/:userId/items', authenticateJWT, itemController.getUserItems);
-
+    router.patch('/set-pending', isAdmin, itemController.setPending);
     return router;
 };
